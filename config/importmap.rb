@@ -10,3 +10,5 @@ pin_all_from "app/javascript/controllers", under: "controllers"
 pin "stimulus-dropdown" # @2.1.0
 pin "hotkeys-js" # @4.0.2
 pin "stimulus-use" # @0.51.3
+
+pin_all_from "app/javascript/lib", under: "lib"

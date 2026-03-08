@@ -1,0 +1,256 @@
+# lefthook.yml
+---
+# Pre-commit hooks - run before each commit
+pre-commit:
+  parallel: true
+  commands:
+    # Ruby linting
+    rubocop:
+      glob: "*.rb"
+      run: bundle exec rubocop --force-exclusion --autocorrect --parallel {staged_files}
+      stage_fixed: true
+    
+    # ERB linting
+    erb_lint:
+      glob: "*.{erb,html.erb}"
+      run: bundle exec erb_lint --autocorrect {staged_files}
+      stage_fixed: true
+    
+    # JavaScript linting
+    eslint:
+      root: "app/javascript/"
+      glob: "*.{js,jsx,ts,tsx}"
+      run: npx eslint --fix {staged_files}
+      stage_fixed: true
+    
+    # CSS linting
+    stylelint:
+      root: "app/assets/stylesheets/"
+      glob: "*.{css,scss}"
+      run: npx stylelint --fix {staged_files}
+      stage_fixed: true
+    
+    # Security checks
+    brakeman:
+      run: bundle exec brakeman --quiet --no-pager
+      skip:
+        - merge
+    
+    # Database consistency
+    rails_best_practices:
+      glob: "*.{rb,erb}"
+      run: bundle exec rails_best_practices --silent
+      skip:
+        - merge
+    
+    # Debugger check
+    debugger_check:
+      glob: "*.{rb,js,jsx,ts,tsx}"
+      run: |
+        if grep -r "binding.pry\|debugger\|console.log" {staged_files}; then
+          echo "❌ Found debugger statements!"
+          exit 1
+        fi
+      stage_fixed: false
+    
+    # Secrets check
+    secrets_check:
+      glob: "*.{rb,yml,json,env}"
+      run: |
+        if grep -r "API_KEY\|SECRET\|PASSWORD" {staged_files}; then
+          echo "⚠️  Found potential secrets in staged files!"
+          echo "Please ensure you're not committing actual secrets."
+          exit 1
+        fi
+      stage_fixed: false
+    
+    # Schema consistency
+    schema_check:
+      glob: "db/schema.rb"
+      run: |
+        if git diff --cached db/schema.rb | grep -q "^+"; then
+          echo "⚠️  Schema.rb has changes. Have you run migrations?"
+        fi
+      stage_fixed: false
+
+# Pre-push hooks - run before pushing to remote
+pre-push:
+  parallel: false
+  commands:
+    # Full test suite
+    rspec:
+      run: bundle exec rspec --fail-fast spec/
+      skip:
+        - merge
+    
+    # Asset compilation check
+    assets_precompile:
+      run: bundle exec rails assets:precompile RAILS_ENV=test --trace
+      skip:
+        - merge
+    
+    # Security audit
+    bundle_audit:
+      run: bundle audit check --update
+    
+    yarn_audit:
+      run: yarn audit --level high
+      skip:
+        - merge
+    
+    # Database consistency
+    db_consistency:
+      run: bundle exec rails db:migrate:status
+
+# Post-merge hooks - run after merging branches
+post-merge:
+  commands:
+    # Bundle install if Gemfile changed
+    bundle_install:
+      files: git diff --name-only HEAD@{1} HEAD
+      glob: "Gemfile*"
+      run: bundle install
+    
+    # Yarn install if package.json changed
+    yarn_install:
+      files: git diff --name-only HEAD@{1} HEAD
+      glob: "package.json"
+      run: yarn install
+    
+    # Run migrations if db changed
+    db_migrate:
+      files: git diff --name-only HEAD@{1} HEAD
+      glob: "db/migrate/*.rb"
+      run: bundle exec rails db:migrate
+    
+    # Update ERD if schema changed
+    erd_update:
+      files: git diff --name-only HEAD@{1} HEAD
+      glob: "db/schema.rb"
+      run: bundle exec erd
+
+# Post-checkout hooks - run after switching branches
+post-checkout:
+  commands:
+    # Check for Gemfile changes
+    bundle_check:
+      files: git diff --name-only {1} {2}
+      glob: "Gemfile*"
+      run: bundle check || bundle install
+    
+    # Check for migration conflicts
+    migration_conflicts:
+      files: git diff --name-only {1} {2}
+      glob: "db/migrate/*.rb"
+      run: |
+        echo "⚠️  New migrations detected. Run 'rails db:migrate' if needed."
+
+# Commit message hooks
+commit-msg:
+  parallel: true
+  commands:
+    # Conventional commit format
+    commit_format:
+      run: |
+        echo {1} | grep -qE '^(feat|fix|docs|style|refactor|test|chore|perf|ci|build|revert)(\(.+\))?: .{1,50}'
+        if [ $? -ne 0 ]; then
+          echo "❌ Commit message must follow conventional format: type(scope): message"
+          echo "Valid types: feat, fix, docs, style, refactor, test, chore, perf, ci, build, revert"
+          exit 1
+        fi
+    
+    # Ticket reference check
+    ticket_reference:
+      run: |
+        echo {1} | grep -qE '\[[A-Z]+-[0-9]+\]'
+        if [ $? -ne 0 ]; then
+          echo "⚠️  Consider adding ticket reference: [PROJ-123]"
+        fi
+
+# Custom scripts
+scripts:
+  "setup":
+    runner: bash
+    run: |
+      echo "🚀 Setting up development environment..."
+      bundle install
+      yarn install
+      rails db:create db:migrate db:seed
+      echo "✅ Setup complete!"
+  
+  "test":
+    runner: bash
+    run: |
+      echo "🧪 Running tests..."
+      bundle exec rspec spec/
+      bundle exec cucumber features/
+  
+  "lint-all":
+    runner: bash
+    run: |
+      echo "🔍 Running all linters..."
+      bundle exec rubocop --parallel
+      bundle exec erb_lint --lint-all
+      npx eslint app/javascript/
+      bundle exec brakeman --quiet
+      echo "✅ Linting complete!"
+
+# GitHub Actions integration
+github_actions:
+  enabled: true
+  jobs:
+    lint:
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v3
+        - uses: ruby/setup-ruby@v1
+          with:
+            ruby-version: '3.2'
+        - run: gem install bundler
+        - run: bundle install
+        - run: bundle exec rubocop
+        - run: bundle exec erb_lint --lint-all
+    
+    test:
+      runs-on: ubuntu-latest
+      services:
+        postgres:
+          image: postgres:15
+          env:
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: postgres
+      steps:
+        - uses: actions/checkout@v3
+        - run: bundle install
+        - run: bundle exec rspec spec/
+
+# Skip certain hooks in specific situations
+skip:
+  # Skip all hooks in CI environment
+  - ci: true
+    commands: ["bundle_install", "yarn_install"]
+  
+  # Skip linting during merge commits
+  - merge: true
+    commands: ["rubocop", "eslint", "erb_lint"]
+
+# Hook templates
+template:
+  pre-commit: |
+    #!/bin/sh
+    # Generated by lefthook
+    # Run 'lefthook install' to refresh this file
+    
+    lefthook run pre-commit $@
+  
+  commit-msg: |
+    #!/bin/sh
+    lefthook run commit-msg $@
+
+# Colors and output
+colors: true
+no_tty_hook: true
+
+# Performance
+min_version: 1.3.0
+jobs: 4  # Parallel jobs count

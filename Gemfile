@@ -65,6 +65,8 @@ group :development do
   gem "foreman"
   gem "letter_opener"
   gem "web-console"
+    # For linting ERB files
+  gem "erb_lint", require: false, git: "https://github.com/Shopify/erb-lint.git", branch: "main"
 end
 
 gem "cancancan"
@@ -81,3 +83,7 @@ gem "rack-cors", require: "rack/cors"
 gem "sidekiq"
 gem "sinatra", require: nil
 gem "slack-notifier"
+
+
+
+gem "lefthook", "~> 2.1"

@@ -2,56 +2,37 @@
 <html>
   <head>
     <title><%= content_for(:title) || "Tracker" %></title>
-
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
-
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
     <%= yield :head %>
 
-    <%# Optional PWA manifest %>
+    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
     <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
 
     <link rel="icon" href="/icon.png" type="image/png">
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/icon.png">
 
+    <%# Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
-
-  <body class="bg-gray-800 font-sans leading-normal tracking-normal min-h-screen flex flex-col">
-
-    <!-- Header / Navbar -->
-    <%= render "layouts/components/header" %>
-
-    <div class="flex flex-col md:flex-row flex-1">
-
-      <!-- Sidebar -->
-      <%= render "layouts/components/sidebar" %>
-
-      <!-- Main Content -->
-      <main class="main-content flex-1 bg-gray-100 pt-16 md:pt-2 pb-24 md:pb-5">
-
-        <!-- Flash Messages -->
-        <div class="flex items-center justify-center">
-          <%= flash_messages %>
-        </div>
-
-        <!-- Page Content -->
-        <div class="flex flex-wrap p-3">
+  
+  <body class="bg-gray-200 min-h-screen flex flex-col">
+    <div class="flex items-center justify-center">
+      <%= flash_messages %>
+    </div>
+    
+    <div class="flex-1 flex items-center justify-center">
+      <div class="bg-neutral-50 shadow-md rounded-xs border w-full max-w-md py-12 px-4 sm:px-6 lg:px-8">
+        <div class="space-y-8">
           <%= yield %>
         </div>
-
-        <!-- Footer -->
-        <%= render "layouts/components/footer" %>
-
-      </main>
-
+      </div>
     </div>
-
   </body>
 </html>
