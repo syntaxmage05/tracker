@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 source "https://rubygems.org"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
@@ -26,9 +28,9 @@ gem "jbuilder"
 gem "tzinfo-data", platforms: %i[ windows jruby ]
 
 # Use the database-backed adapters for Rails.cache, Active Job, and Action Cable
+gem "solid_cable"
 gem "solid_cache"
 gem "solid_queue"
-gem "solid_cable"
 
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", require: false
@@ -50,34 +52,32 @@ group :development, :test do
   gem "brakeman", require: false
 
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
-  gem "rubocop-rails-omakase", require: false
-  gem "rspec-rails"
-  gem "rails-controller-testing"
   gem "capybara"
-  gem "simplecov", :require => false, :group => :test
   gem "factory_bot_rails"
+  gem "rails-controller-testing"
+  gem "rspec-rails"
+  gem "rubocop-rails-omakase", require: false
+  gem "simplecov", require: false, group: :test
 end
 
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
-  gem "web-console"
-  gem "letter_opener"
   gem "foreman"
+  gem "letter_opener"
+  gem "web-console"
 end
 
-gem "local_time"
+gem "cancancan"
 gem "devise"
 gem "devise_invitable"
+gem "local_time"
 gem "rolify"
-gem "cancancan"
 
 gem "immutable-struct"
 
-gem "sidekiq"
-gem "sinatra", require: nil
 gem "gravatar_image_tag"
 gem "money-rails"
+gem "rack-cors", require: "rack/cors"
+gem "sidekiq"
+gem "sinatra", require: nil
 gem "slack-notifier"
-gem "rack-cors", :require => "rack/cors"
-
-
