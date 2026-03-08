@@ -5,5 +5,6 @@ FactoryBot.define do
     name { "MyString" }
     email { "email.test@mail.com" }
     password { "password" }
+    account { association :account }
   end
 end

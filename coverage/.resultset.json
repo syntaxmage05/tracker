@@ -1,6 +1,12 @@
 {
   "RSpec": {
     "coverage": {
+      "/home/njongefred/Rails/tracker/app/helpers/accounts_helper.rb": {
+        "lines": [
+          1,
+          null
+        ]
+      },
       "/home/njongefred/Rails/tracker/app/helpers/activity_helper.rb": {
         "lines": [
           null,
@@ -14,16 +20,46 @@
           null,
           null,
           1,
+          1,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          1,
+          5,
+          0,
+          null,
+          0,
+          null,
+          0,
+          null,
+          0,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          1,
+          null,
+          1,
+          null,
+          0,
+          null,
           null
         ]
       },
-      "/home/njongefred/Rails/tracker/app/models/user.rb": {
+      "/home/njongefred/Rails/tracker/app/models/account.rb": {
         "lines": [
-          1,
           null,
           null,
           1,
+          1,
           null,
+          1,
           null
         ]
       },
@@ -34,6 +70,74 @@
           1,
           1,
           1,
+          null
+        ]
+      },
+      "/home/njongefred/Rails/tracker/app/models/user.rb": {
+        "lines": [
+          null,
+          null,
+          1,
+          null,
+          null,
+          1,
+          null,
+          null,
+          1,
+          null
+        ]
+      },
+      "/home/njongefred/Rails/tracker/app/controllers/accounts_controller.rb": {
+        "lines": [
+          null,
+          null,
+          1,
+          1,
+          2,
+          null,
+          2,
+          null,
+          null,
+          1,
+          2,
+          null,
+          2,
+          1,
+          1,
+          1,
+          null,
+          1,
+          null,
+          null,
+          null,
+          1,
+          null,
+          1,
+          2,
+          null,
+          null
+        ]
+      },
+      "/home/njongefred/Rails/tracker/app/controllers/application_controller.rb": {
+        "lines": [
+          null,
+          null,
+          1,
+          null,
+          1,
+          null,
+          1,
+          1,
+          null,
+          1,
+          null,
+          1,
+          5,
+          0,
+          null,
+          5,
+          null,
+          null,
           null
         ]
       },
@@ -50,15 +154,25 @@
           null
         ]
       },
-      "/home/njongefred/Rails/tracker/app/controllers/application_controller.rb": {
+      "/home/njongefred/Rails/tracker/app/controllers/registrations_controller.rb": {
         "lines": [
           null,
           null,
-          1,
+          0,
+          0,
           null,
-          1,
-          null
-        ]
+          0,
+          null,
+          0,
+          0,
+          0,
+          null,
+          0,
+          0,
+          0,
+          0
+        ],
+        "branches": {}
       },
       "/home/njongefred/Rails/tracker/app/jobs/application_job.rb": {
         "lines": [
@@ -86,6 +200,6 @@
         "branches": {}
       }
     },
-    "timestamp": 1772981517
+    "timestamp": 1772992455
   }
 }
