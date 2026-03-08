@@ -2,7 +2,7 @@
 
 Rails.application.routes.draw do
   devise_for :users, controllers: { registrations: "registrations" }
-  resources :accounts
+  resource :accounts
 
   get "activity/mine"
   get "activity/feed"
