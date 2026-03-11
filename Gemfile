@@ -59,6 +59,8 @@ group :development, :test do
   gem "rubocop-rails-omakase", require: false
   gem "simplecov", require: false, group: :test
   gem 'faker'
+  gem "selenium-webdriver"
+  gem "webdrivers"
 end
 
 group :development do

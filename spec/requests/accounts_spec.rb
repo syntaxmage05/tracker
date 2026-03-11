@@ -3,12 +3,19 @@
 require "rails_helper"
 
 RSpec.describe "Accounts", type: :request do
-  login_user
-  describe "GET /new" do
-    before do
-      @user.account = nil
-      @user.save!
-    end
+  before(:each) do
+    user = User.create!(
+      name: "John",
+      email: "test@user.com",
+      password: "password"
+    )
+    sign_in user
+  end
+  describe "GET #new" do
+    # before do
+    #   @user.account = nil
+    #   @user.save!
+    # end
 
     it "returns http success" do
       get "/accounts/new"

@@ -2,7 +2,7 @@
 
 Rails.application.routes.draw do
   mount LetterOpenerWeb::Engine, at: "/letter_opener" if Rails.env.development?
- 
+
   devise_for :users, controllers: { registrations: "registrations" }
   resource :accounts
 
@@ -12,7 +12,7 @@ Rails.application.routes.draw do
   patch "user/update_password", to: "users#update_password", as: "my_update_password"
 
   scope "account", as: "account" do
-    resources :users
+    resources :users, controllers: "users"
   end
 
   get "activity/mine"
