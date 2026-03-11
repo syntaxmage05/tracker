@@ -64,6 +64,7 @@ group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "foreman"
   gem "letter_opener"
+  gem 'letter_opener_web', '~> 3.0'
   gem "web-console"
     # For linting ERB files
   gem "erb_lint", require: false, git: "https://github.com/Shopify/erb-lint.git", branch: "main"
