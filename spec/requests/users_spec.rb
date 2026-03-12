@@ -5,6 +5,7 @@ require "rails_helper"
 RSpec.describe "Users", type: :request do
   login_user
   describe "GET /index" do
+    login_admin
     it "returns http success" do
       get "/account/users"
       expect(response).to have_http_status(:success)
@@ -73,6 +74,7 @@ RSpec.describe "Users", type: :request do
     end
   end
   describe "GET /new" do
+    login_admin
     it "returns http success" do
       get "/account/users/new"
       expect(response).to have_http_status(:success)
@@ -84,6 +86,7 @@ RSpec.describe "Users", type: :request do
     end
   end
   describe "POST #create" do
+    login_admin
     it "creates a user" do
       post "/account/users", params: {
         user: FactoryBot.attributes_for(:user, { role: "user" })
@@ -107,6 +110,7 @@ RSpec.describe "Users", type: :request do
     end
   end
   describe "GET /edit" do
+    login_admin
     user = FactoryBot.create(:user)
     it "returns http success" do
       get "/account/users/#{user.id}/edit"
@@ -120,6 +124,7 @@ RSpec.describe "Users", type: :request do
   end
 
   describe "PUT #update" do
+    login_admin
     user = FactoryBot.create(:user)
     it "returns http success" do
       put "/account/users/#{user.id}", params: {
@@ -138,6 +143,7 @@ RSpec.describe "Users", type: :request do
   end
 
   describe "DELETE #destroy" do
+    login_admin
     user = FactoryBot.create(:user)
     it "returns http success" do
       delete "/account/users/#{user.id}", params: { id: user.id }

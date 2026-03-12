@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class UsersController < ApplicationController
+  load_and_authorize_resource except: [:me, :update_me, :password, :update_password]
   before_action :set_user, only: [:show, :edit, :update, :destroy]
   before_action :set_users, only: [:index]
 
@@ -30,6 +31,7 @@ class UsersController < ApplicationController
     respond_to do |format|
       if @user.update(user_password_params)
         bypass_sign_in(@user)
+
         format.html do
           redirect_to my_password_path,
             notice: "Password was successfully updated."
@@ -56,7 +58,7 @@ class UsersController < ApplicationController
   end
 
   def create
-    @user = User.unscoped.new(user_params.except(:role))
+    @user = User.unscoped.new(user_params.except("role"))
     @user.account = current_account
     @user.password = "password123"
 
@@ -73,6 +75,7 @@ class UsersController < ApplicationController
           set_choices
           format.html { render :new }
         end
+
       rescue ActiveRecord::RecordNotUnique
         flash[:alert] = "Email must be unique"
         format.html { render :new }
@@ -84,10 +87,11 @@ class UsersController < ApplicationController
     respond_to do |format|
       if @user.update(user_params.except("role"))
         update_roles
-        format.html {
+
+        format.html do
           redirect_to account_users_path,
-            notice: "User was successfully updated"
-        }
+            notice: "User was successfully updated."
+        end
       else
         set_choices
         format.html { render :edit }
@@ -97,17 +101,20 @@ class UsersController < ApplicationController
 
   def destroy
     @user.destroy
+
     respond_to do |format|
-      format.html {
+      format.html do
         redirect_to account_users_path,
-          notice: "User was successfully destroyed"
-      }
+          notice: "User was successfully destroyed."
+      end
+
       format.json { head :no_content }
     end
   end
 
   private
 
+    # Callbacks
     def set_users
       @users = current_account.users
     end
@@ -120,17 +127,18 @@ class UsersController < ApplicationController
       @choices = [["Admin", "admin"], ["User", "user"]]
     end
 
+    # Strong parameters
     def user_params
-      params.expect(user: [:name, :email, :role, :time_zone])
+      params.require(:user).permit(:name, :email, :role, :time_zone)
     end
 
     def user_password_params
-      params.expect(user: [:password, :password_confirmation])
+      params.require(:user).permit(:password, :password_confirmation)
     end
 
     def update_roles
       if @user.roles&.first&.name != user_params[:role]
-        @user.remove_role @user.role&.first&.name.to_sym
+        @user.remove_role @user.roles&.first&.name.to_sym
         @user.add_role user_params[:role].to_sym, current_account
       end
     end

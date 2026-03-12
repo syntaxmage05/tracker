@@ -86,7 +86,7 @@
       <div>
         <%= f.label :role,
               class: "block mb-2 text-sm font-medium text-gray-900" %>
-
+        
         <%= f.select :role,
               options_for_select(@choices, @user&.roles&.first&.name),
               {},

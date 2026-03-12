@@ -5,6 +5,11 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   allow_browser versions: :modern
 
+  rescue_from CanCan::AccessDenied do |exception|
+    redirect_to root_url, error: exception.message
+  end
+  add_flash_types :error
+
   before_action :authenticate_user!
   layout :layout_by_resource
 
