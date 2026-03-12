@@ -58,13 +58,19 @@ group :development, :test do
   gem "rspec-rails"
   gem "rubocop-rails-omakase", require: false
   gem "simplecov", require: false, group: :test
+  gem 'faker'
+  gem "selenium-webdriver"
+  gem "webdrivers"
 end
 
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "foreman"
   gem "letter_opener"
+  gem 'letter_opener_web', '~> 3.0'
   gem "web-console"
+    # For linting ERB files
+  gem "erb_lint", require: false, git: "https://github.com/Shopify/erb-lint.git", branch: "main"
 end
 
 gem "cancancan"
@@ -81,3 +87,7 @@ gem "rack-cors", require: "rack/cors"
 gem "sidekiq"
 gem "sinatra", require: nil
 gem "slack-notifier"
+
+
+
+gem "lefthook", "~> 2.1"

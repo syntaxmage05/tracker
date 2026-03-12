@@ -1,0 +1,224 @@
+---
+# .erb-lint.yml
+---
+glob: "**/*.html.erb"
+exclude:
+  - '**/vendor/**/*'
+  - '**/node_modules/**/*'
+  - '**/public/**/*'
+  - '**/tmp/**/*'
+  - '**/log/**/*'
+
+linters:
+  # REQUIRED LINTERS
+  # ================
+  
+  # Enforces closing ERB tags with newlines for better readability
+  ClosingErbTagIndent:
+    enabled: true
+    indent_size: 2
+  
+  # Prevents extra whitespace that could affect rendering
+  ExtraNewline:
+    enabled: true
+  
+  # Checks for correct indentation of Ruby code in ERB
+  Rubocop:
+    enabled: true
+    rubocop_config:
+      inherit_from:
+        - .rubocop.yml
+      # Specific RuboCop rules to ignore in ERB files
+      Layout/InitialIndentation:
+        Enabled: false
+      Layout/TrailingEmptyLines:
+        Enabled: false
+      Layout/TrailingWhitespace:
+        Enabled: false
+      Naming/FileName:
+        Enabled: false
+      Style/FrozenStringLiteralComment:
+        Enabled: false
+      Lint/UselessAssignment:
+        Enabled: false
+      Rails/OutputSafety:
+        Enabled: false
+  
+  # Ensures proper spacing around ERB tags
+  SpaceInHtmlTag:
+    enabled: true
+    # Allow spaces around '=' for better readability
+    EnforceStyle: single_quotes
+    SupportedStyles:
+      - single_quotes
+      - double_quotes
+  
+  # Enforces consistent indentation
+  SelfClosingTag:
+    enabled: true
+    style: ">"
+    # Options: ">" (HTML5) or " />" (XHTML)
+  
+  # OPTIONAL BUT RECOMMENDED LINTERS
+  # ================================
+  
+  # Prevents hardcoded strings that should be in locales
+  HardCodedString:
+    enabled: false
+    exclude:
+      - '**/app/views/layouts/**/*'
+      - '**/app/views/devise/**/*'
+  
+  # Enforces using content_tag instead of raw HTML
+  ContentTag:
+    enabled: false
+  
+  # Ensures proper indentation of partials
+  PartialInstanceVariable:
+    enabled: true
+    exclude:
+      - '**/app/views/shared/**/*'
+  
+  # Prevents usage of inline styles
+  InlineStyles:
+    enabled: true
+  
+  # Ensures proper spacing around arguments
+  SpaceAroundErbTag:
+    enabled: true
+    # Options: "require_space" or "no_space"
+    EnforceStyle: require_space
+  
+  # Checks for deprecated shorthands
+  DeprecatedShorthands:
+    enabled: true
+  
+  # Ensures ERB tags are properly closed
+  ErbTagClose:
+    enabled: true
+  
+  # Validates data attributes format
+  DataAttribute:
+    enabled: true
+    # Enforce kebab-case for data attributes (data-controller-name)
+    pattern: "^[a-z0-9\\-]+$"
+  
+  # Prevents inline JavaScript in HTML attributes
+  InlineJavascript:
+    enabled: true
+  
+  # Ensures alt text on images for accessibility
+  ImageAlt:
+    enabled: true
+  
+  # Ensures labels have associated inputs for accessibility
+  LabelWithInput:
+    enabled: true
+  
+  # ADVANCED LINTERS
+  # ================
+  
+  # Rubocop with Rails-specific cops
+  Rubocop:
+    enabled: true
+    only: [
+      'Layout/**',
+      'Style/**',
+      'Rails/HelperInstanceVariable',
+      'Rails/LinkToBlank',
+      'Rails/OutputSafety'
+    ]
+    exclude:
+      - '**/app/views/layouts/mailer/**/*'
+    rubocop_config:
+      Layout/LineLength:
+        Max: 120
+      Style/StringLiterals:
+        EnforcedStyle: double_quotes
+      Style/CommentAnnotation:
+        Enabled: false
+  
+  # Checks for proper form authenticity tokens
+  AuthenticityToken:
+    enabled: true
+  
+  # Validates HTML5 semantics
+  HtmlSemantics:
+    enabled: true
+    required_tags:
+      - main
+      - nav
+      - header
+      - footer
+    allowed_tags:
+      - div
+      - span
+  
+  # Prevents common security issues
+  Security:
+    enabled: true
+    rules:
+      - rule: "No raw or html_safe without comment"
+        pattern: "<%= .*html_safe.*%>"
+        message: "Avoid html_safe without explicit approval. Add a comment explaining why it's safe."
+      - rule: "No inline JavaScript"
+        pattern: "onclick|onload|onsubmit"
+        message: "Use Stimulus controllers instead of inline JavaScript."
+  
+  # Accessibility checks
+  Accessibility:
+    enabled: true
+    rules:
+      - rule: "Images must have alt text"
+        pattern: "<img(?!.*alt=)"
+        message: "All images must have alt text for accessibility."
+      - rule: "Buttons must have accessible names"
+        pattern: "<button>(\\s*)</button>"
+        message: "Buttons must have text content for screen readers."
+  
+  # Turbo/Stimulus specific checks
+  Hotwire:
+    enabled: true
+    rules:
+      - rule: "Stimulus controller naming"
+        pattern: "data-controller=\"[a-z\\-]+\""
+        message: "Stimulus controllers should use kebab-case"
+      - rule: "Turbo frame IDs"
+        pattern: "<turbo-frame[^>]*id=[\"']"
+        message: "Turbo frames should have unique IDs"
+
+  # Rails view conventions
+  RailsView:
+    enabled: true
+    rules:
+      - rule: "Use translation helpers"
+        pattern: "(?<!t\\(|<%=t\\(|<%=\\s*t\\().{20,}"
+        message: "Consider using t() helper for longer text strings"
+      - rule: "Avoid instance variables in partials"
+        pattern: "<%[=]?\\s*@\\w+"
+        message: "Use local variables instead of instance variables in partials"
+      - rule: "Use button_to for destructive actions"
+        pattern: "<%= link_to .*method: :(delete|patch|put)"
+        message: "Consider using button_to for non-GET actions"
+
+# Custom rules for your project
+custom_rules:
+  - name: "No console.log in ERB"
+    pattern: "console\\.log"
+    message: "Remove console.log statements from production views"
+    level: "error" # error, warning, or info
+  
+  - name: "Company branding compliance"
+    pattern: "YourCompany|Your App"
+    message: "Update to correct branding"
+    level: "warning"
+
+# Configuration for auto-correction
+auto_correct:
+  enabled: true
+  linters:
+    - ClosingErbTagIndent
+    - ExtraNewline
+    - SpaceInHtmlTag
+    - SelfClosingTag
+    - SpaceAroundErbTag

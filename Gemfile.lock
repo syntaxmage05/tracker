@@ -1,3 +1,16 @@
+GIT
+  remote: https://github.com/Shopify/erb-lint.git
+  revision: 78b1401ae1f11738d879f6095d399bce5203e840
+  branch: main
+  specs:
+    erb_lint (0.9.0)
+      activesupport
+      better_html (>= 2.0.1)
+      parser (>= 2.7.1.4)
+      rainbow
+      rubocop (>= 1)
+      smart_properties
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -81,6 +94,13 @@ GEM
     bcrypt_pbkdf (1.1.2-arm64-darwin)
     bcrypt_pbkdf (1.1.2-x86_64-darwin)
     benchmark (0.5.0)
+    better_html (2.2.0)
+      actionview (>= 7.0)
+      activesupport (>= 7.0)
+      ast (~> 2.0)
+      erubi (~> 1.4)
+      parser (>= 2.4)
+      smart_properties
     bigdecimal (4.0.1)
     bindex (0.8.1)
     bootsnap (1.23.0)
@@ -130,6 +150,8 @@ GEM
     factory_bot_rails (6.5.1)
       factory_bot (~> 6.5)
       railties (>= 6.1.0)
+    faker (3.6.1)
+      i18n (>= 1.8.11, < 2)
     foreman (0.90.0)
       thor (~> 1.4)
     fugit (1.12.1)
@@ -174,8 +196,14 @@ GEM
       addressable (~> 2.8)
       childprocess (~> 5.0)
       logger (~> 1.6)
+    lefthook (2.1.3)
     letter_opener (1.10.0)
       launchy (>= 2.2, < 4)
+    letter_opener_web (3.0.0)
+      actionmailer (>= 6.1)
+      letter_opener (~> 1.9)
+      railties (>= 6.1)
+      rexml
     lint_roller (1.1.0)
     local_time (3.0.3)
     logger (1.7.0)
@@ -332,6 +360,7 @@ GEM
     responders (3.2.0)
       actionpack (>= 7.0)
       railties (>= 7.0)
+    rexml (3.4.4)
     rolify (6.0.1)
     rspec-core (3.13.6)
       rspec-support (~> 3.13.0)
@@ -381,7 +410,12 @@ GEM
       rubocop-rails (>= 2.30)
     ruby-progressbar (1.13.0)
     ruby2_keywords (0.0.5)
+    rubyzip (2.4.1)
     securerandom (0.4.1)
+    selenium-webdriver (4.10.0)
+      rexml (~> 3.2, >= 3.2.5)
+      rubyzip (>= 1.2.2, < 3.0)
+      websocket (~> 1.0)
     sidekiq (8.1.1)
       connection_pool (>= 3.0.0)
       json (>= 2.16.0)
@@ -402,6 +436,7 @@ GEM
       rack-session (>= 2.0.0, < 3)
       tilt (~> 2.0)
     slack-notifier (2.4.0)
+    smart_properties (1.17.0)
     solid_cable (3.0.12)
       actioncable (>= 7.2)
       activejob (>= 7.2)
@@ -463,6 +498,11 @@ GEM
       actionview (>= 8.0.0)
       bindex (>= 0.4.0)
       railties (>= 8.0.0)
+    webdrivers (5.3.1)
+      nokogiri (~> 1.6)
+      rubyzip (>= 1.3.0)
+      selenium-webdriver (~> 4.0, < 4.11)
+    websocket (1.2.11)
     websocket-driver (0.8.0)
       base64
       websocket-extensions (>= 0.1.0)
@@ -491,14 +531,18 @@ DEPENDENCIES
   debug
   devise
   devise_invitable
+  erb_lint!
   factory_bot_rails
+  faker
   foreman
   gravatar_image_tag
   immutable-struct
   importmap-rails
   jbuilder
   kamal
+  lefthook (~> 2.1)
   letter_opener
+  letter_opener_web (~> 3.0)
   local_time
   money-rails
   pg (~> 1.1)
@@ -510,6 +554,7 @@ DEPENDENCIES
   rolify
   rspec-rails
   rubocop-rails-omakase
+  selenium-webdriver
   sidekiq
   simplecov
   sinatra
@@ -523,6 +568,7 @@ DEPENDENCIES
   turbo-rails
   tzinfo-data
   web-console
+  webdrivers
 
 BUNDLED WITH
    2.5.11
