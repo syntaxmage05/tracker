@@ -11,21 +11,31 @@ module ApplicationHelper
   end
 
   def flash_messages(_opts = {})
-    # return if flash[0][0] == :form_error
-
     flash.each do |msg_type, message|
       next if msg_type == :form_error
 
+      color = tailwind_color_class_for(msg_type)
+
       concat(
         content_tag(
-          :div,
-          message.html_safe,
-          {
-            class: "alert transition-all duration-1000 ease-in-out p-4 m-4 mt-5 w-3/5 bg-#{tailwind_color_class_for(msg_type)}-100 border border-#{tailwind_color_class_for(msg_type)}-400 text-#{tailwind_color_class_for(msg_type)}-700 rounded-lg",
-            role: msg_type
-          }
-        ) do
-          concat content_tag(:span, message.html_safe, class: "block sm:inline")
+          :div, class: [
+          "alert",
+          "transition-all",
+          "duration-1000",
+          "ease-in-out",
+          "p-4",
+          "m-4",
+          "mt-5",
+          "w-3/5",
+          "bg-#{color}-100",
+          "border",
+          "border-#{color}-400",
+          "text-#{color}-700",
+          "rounded-lg"
+        ].join(" "), role: msg_type) do
+          concat(
+            content_tag(:span, message, class: "block sm:inline") # safe, no html_safe
+          )
         end
       )
     end

@@ -129,11 +129,11 @@ class UsersController < ApplicationController
 
     # Strong parameters
     def user_params
-      params.require(:user).permit(:name, :email, :role, :time_zone)
+      params.expect(user: [:name, :email, :role, :time_zone])
     end
 
     def user_password_params
-      params.require(:user).permit(:password, :password_confirmation)
+      params.expect(user: [:password, :password_confirmation])
     end
 
     def update_roles
