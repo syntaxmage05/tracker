@@ -3,8 +3,13 @@
 require "rails_helper"
 
 RSpec.describe "activity/mine.html.erb", type: :view do
-  it "renders the word mine" do
+  before do
+    allow(view).to receive(:current_date)
+      .and_return(Time.zone.today.strftime("%a %-d %b %Y"))
+  end
+
+  it "renders the word feed" do
     render template: "activity/mine"
-    expect(rendered).to match(/mine/)
+    expect(rendered).to match(/My Activity/)
   end
 end

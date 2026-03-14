@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
+  resources :standups
   mount LetterOpenerWeb::Engine, at: "/letter_opener" if Rails.env.development?
 
   devise_for :users, controllers: { registrations: "registrations" }
@@ -14,6 +15,8 @@ Rails.application.routes.draw do
   scope "account", as: "account" do
     resources :users, controllers: "users"
   end
+
+  get "dates/:date", to: "dates#update", as: "update_date"
 
   get "activity/mine"
   get "activity/feed"
