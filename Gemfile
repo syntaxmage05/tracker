@@ -59,6 +59,7 @@ group :development, :test do
   gem "rspec-rails"
   gem "rubocop-rails-omakase", require: false
   gem "selenium-webdriver"
+  gem "shoulda-matchers"
   gem "simplecov", require: false, group: :test
   gem "webdrivers", require: false
 end

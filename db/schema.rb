@@ -10,10 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_03_13_131919) do
+ActiveRecord::Schema[8.0].define(version: 2026_03_14_141634) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pgcrypto"
+
+  # Custom types defined in this database.
+  # Note that some types may not work with other database engines. Be careful if changing database.
+  create_enum "days_of_week", ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"]
 
   create_table "accounts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
@@ -27,6 +31,14 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_13_131919) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["settings"], name: "index_accounts_on_settings", using: :gin
+  end
+
+  create_table "days_of_week_memberships", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "team_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.enum "day", default: "monday", null: false, enum_type: "days_of_week"
+    t.index ["team_id"], name: "index_days_of_week_memberships_on_team_id"
   end
 
   create_table "roles", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -45,6 +57,28 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_13_131919) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_standups_on_user_id"
+  end
+
+  create_table "team_memberships", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "team_id", null: false
+    t.uuid "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["team_id"], name: "index_team_memberships_on_team_id"
+    t.index ["user_id"], name: "index_team_memberships_on_user_id"
+  end
+
+  create_table "teams", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.uuid "account_id", null: false
+    t.string "timezone"
+    t.boolean "has_remainder"
+    t.boolean "has_recap"
+    t.time "reminder_time"
+    t.time "recap_time"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_teams_on_account_id"
   end
 
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -82,6 +116,10 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_13_131919) do
     t.index ["user_id"], name: "index_users_roles_on_user_id"
   end
 
+  add_foreign_key "days_of_week_memberships", "teams"
   add_foreign_key "standups", "users"
+  add_foreign_key "team_memberships", "teams"
+  add_foreign_key "team_memberships", "users"
+  add_foreign_key "teams", "accounts"
   add_foreign_key "users", "accounts"
 end
