@@ -1,0 +1,17 @@
+<div class="flex p-5" aria-label="Breadcrumb">
+  <ol class="inline-flex items-center space-x-1 md:space-x-3">
+    <li class="inline-flex items-center">
+      <h2 class="inline-flex items-center font-medium text-gray-700 hover:text-gray-900">
+        Teams
+      </h2>
+    </li>
+  </ol>
+</div>
+
+<div class="flex justify-center">
+  <div class="p-4">
+    <div class="grid grid-cols-4 gap-4">
+      <%= render @teams.to_a.push(Team.new) %>
+    </div>
+  </div>
+</div>

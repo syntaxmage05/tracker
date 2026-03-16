@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_03_14_141634) do
+ActiveRecord::Schema[8.0].define(version: 2026_03_16_194415) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pgcrypto"
@@ -72,12 +72,13 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_14_141634) do
     t.string "name"
     t.uuid "account_id", null: false
     t.string "timezone"
-    t.boolean "has_remainder"
+    t.boolean "has_reminder"
     t.boolean "has_recap"
     t.time "reminder_time"
     t.time "recap_time"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "description"
     t.index ["account_id"], name: "index_teams_on_account_id"
   end
 

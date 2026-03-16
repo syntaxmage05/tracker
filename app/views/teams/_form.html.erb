@@ -1,0 +1,101 @@
+<%= form_with model: @team, id: 'team-form', html: {class: 'space-y-6'} do |f| %>
+  <% if @team.errors.any? %>
+    <div class="text-red-700">
+      <h4>
+        <%= "#{pluralize(@team.errors.count, "error")} prohibited this team from being saved:" %>
+      </h4>
+      <%= @team.errors.full_messages.map{|msg| content_tag(:li, msg)}.join %>
+    </div>
+  <% end %>
+
+  <div>
+    <%= f.label :name, class: 'block mb-2 text-sm font-medium text-gray-900' %>
+    <%= f.text_field :name, placeholder: 'Enter a Team name', class: 'block w-full p-2.5 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500' %>
+  </div>
+
+  <div>
+    <%= f.label :description, class: 'block mb-2 text-sm font-medium text-gray-900' %>
+    <%= f.text_area :description, placeholder: 'Enter a team description', class: 'block w-full p-2.5 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500' %>
+  </div>
+
+  <div>
+    <%= f.label :timezone, class: 'block mb-2 text-sm font-medium text-gray-900' %>
+    <%= f.time_zone_select :timezone, ActiveSupport::TimeZone.us_zones, {}, class: 'block w-full p-2.5 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500' %>
+  </div>
+
+  <div>
+    <%= f.label "", "Days of the week", class: 'block mb-2 text-sm font-medium text-gray-900' %>
+    <% DaysOfWeekMembership.days.each do |day_name, i| %>
+      <div class="inline">
+        <%= check_box_tag "team[days][]", day_name,
+          f.object.days.pluck(:day).include?(day_name),
+          {id: "team_days_#{day_name.downcase}", class: 'w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500'} %>
+        <%= f.label "days_#{day_name.downcase}",
+          day_name.capitalize,
+          {style: "padding-left: 0px"} %>
+      </div>
+    <% end %>
+    <p id="helper-text-explanation" class="mt-2 text-sm text-gray-500">The days of the week to hold status reports.</p>
+  </div>
+
+  <div class="py-4">
+    <div class="w-full border-t border-gray-300"></div>
+  </div>
+
+  <div>
+    <%= f.label "", "Users", class: 'block mb-2 text-sm font-medium text-gray-900' %>
+    <% @_set_users.each do |user| %>
+      <div class="inline">
+        <%= check_box_tag "team[user_ids][]", user.id,
+          f.object.users.pluck(:id).include?(user.id),
+          {id: "team_user_#{user.id}", class: 'w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500'} %>
+        <%= f.label "user_#{user.id}", user.email, {style: "padding-left: 0px"} %>
+      </div>
+    <% end %>
+    <p id="helper-text-explanation" class="mt-2 text-sm text-gray-500">Users to be included in this team.</p>
+  </div>
+
+  <div class="pt-4">
+    <div class="w-full border-t border-gray-300"></div>
+  </div>
+
+  <h6 class="text-center">Notification Settings</h6>
+
+  <div data-controller="visibility">
+    <div>
+      <%= label_tag '', 'Send Reminder Notification?', class: 'block mb-2 text-sm font-medium text-gray-900' %>
+      <div class="">
+        <%= f.check_box :has_reminder, data: {action: "visibility#toggleTargets"}, class: 'w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500' %>
+        <%= label_tag 'team_has_reminder', "&nbsp;".html_safe, class: 'inline' %>
+      </div>
+      <p id="helper-text-explanation" class="mt-2 text-sm text-gray-500">Send a reminder notification on days the team has reports.</p>
+    </div>
+
+    <div class="pt-4" data-visibility-target="hideable" id="reminder-time-box" hidden="<%= f.object.has_reminder ? '' : 'hidden' %>">
+      <%= f.label :reminder_time, class: 'block mb-2 text-sm font-medium text-gray-900' %>
+      <%= f.time_select :reminder_time, {ampm: true, minute_step: 15},
+        {style:'display: inline; width: 10%;', class: 'block w-full p-2.5 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500'} %>
+      <p id="helper-text-explanation" class="mt-2 text-sm text-gray-500">Time of the day to send report reminder in the selected time zone.</p>
+    </div>
+  </div>
+
+  <div data-controller="visibility">
+    <div>
+      <%= label_tag '', 'Send Recap Notification?', class: 'block mb-2 text-sm font-medium text-gray-900' %>
+      <div class="">
+        <%= f.check_box :has_recap, data: {action: "visibility#toggleTargets"}, class: 'w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500' %>
+        <%= label_tag 'team_has_recap', "&nbsp;".html_safe, class: 'inline' %>
+      </div>
+      <p id="helper-text-explanation" class="mt-2 text-sm text-gray-500">Send a recap notification on days the team has reports.</p>
+    </div>
+
+    <div class="pt-4" data-visibility-target="hideable" id="recap-time-box" hidden="<%= f.object.has_recap ? '' : 'hidden' %>">
+      <%= f.label :recap_time, class: 'block mb-2 text-sm font-medium text-gray-900' %>
+      <%= f.time_select :recap_time, {ampm: true, minute_step: 15},
+        {style:'display: inline; width: 10%;', class: 'block w-full p-2.5 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500'} %>
+      <p id="helper-text-explanation" class="mt-2 text-sm text-gray-500">Time of the day to send report recap in the selected time zone.</p>
+    </div>
+  </div>
+
+  <%= f.submit "Save", class: "px-5 py-2.5 text-sm font-medium text-white text-center bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 w-full sm:w-auto" %>
+<% end %>

@@ -6,6 +6,7 @@ Rails.application.routes.draw do
 
   devise_for :users, controllers: { registrations: "registrations" }
   resource :accounts
+  resources :teams, path: "t"
 
   get "user/me", to: "users#me", as: "my_settings"
   patch "user/update_me", to: "users#update_me", as: "update_my_settings"
