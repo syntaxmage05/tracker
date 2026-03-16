@@ -2,27 +2,22 @@
   <!--Nav-->
   <nav aria-label="menu nav" class="bg-gray-800 pt-2 md:pt-1 pb-1 px-1 mt-0 h-auto fixed w-full z-20 top-0">
     <div class="flex flex-wrap items-center">
-      
       <div class="flex flex-shrink md:w-1/2 justify-center md:justify-start text-white">
         <a href="/" aria-label="Home">
           <span class="text-xl pl-2">Standup App</span>
         </a>
       </div>
-      
       <div class="flex w-full pt-2 content-center justify-between md:w-1/2 md:justify-end">
         <ul class="list-reset flex justify-between flex-1 md:flex-none items-center">
-          
           <li class="flex-1 md:flex-none md:mr-3">
             <a href="/t" class="inline-block py-2 px-4 text-white no-underline">Teams</a>
             <a href="/s" class="inline-block py-2 px-4 text-white no-underline">Standups</a>
           </li>
-          
           <li class="flex-1 md:flex-none md:mr-3">
             <div data-controller="dropdown" class="relative inline-block">
               <button data-action="dropdown#toggle click@window->dropdown#hide" class="drop-button text-white py-2 px-2">
                 <%= heroicon 'bell' %>
               </button>
-              
               <div data-dropdown-target="menu" 
                    class="w-64 hidden absolute bg-gray-800 text-white right-0 mt-3 p-3 overflow-auto z-30" 
                    data-transition-enter-from="opacity-0 scale-95" 
@@ -37,13 +32,11 @@
               </div>
             </div>
           </li>
-          
           <li class="flex-1 md:flex-none md:mr-3">
             <div data-controller="dropdown" class="relative inline-block">
               <button data-action="dropdown#toggle click@window->dropdown#hide" class="drop-button text-white py-2 px-2">
                 <%= heroicon 'cog' %>
               </button>
-              
               <div data-dropdown-target="menu" 
                    class="hidden absolute bg-gray-800 text-white right-0 mt-3 p-3 overflow-auto z-30" 
                    data-transition-enter-from="opacity-0 scale-95" 
@@ -51,40 +44,31 @@
                    data-transition-leave-from="opacity-100 scale-100" 
                    data-transition-leave-to="opacity-0 scale-95" 
                    id="user-dropdown">
-                
                 <img class="mx-auto rounded-full" 
                      alt="User Image" 
                      src='<%= user_avatar_url(current_user.email, 45) %>' />
-                
                 <span class="text-xs">
                   <%= current_user.email %>
                 </span>
-                
                 <div class="py-4">
                   <div class="w-full border-t border-gray-300"></div>
                 </div>
-                
                 <a href="/user/me" data-action="dropdown#toggle" class="p-2 hover:bg-gray-800 text-white text-md no-underline hover:no-underline block">
                   <i class="fa fa-user fa-fw"></i> Profile
                 </a>
-                
                 <a href="/account/users" data-action="dropdown#toggle" class="p-2 hover:bg-gray-800 text-white text-md no-underline hover:no-underline block">
                   <i class="fa fa-cog fa-fw"></i> Settings
                 </a>
-                
                 <div class="py-2">
                   <div class="w-full border-t border-gray-300"></div>
                 </div>
-                
                 <%= link_to "Log out", destroy_user_session_path, data: { turbo_method: :delete}, 
                     class: 'p-2 hover:bg-gray-800 text-white text-md no-underline hover:no-underline block' %>
               </div>
             </div>
           </li>
-          
         </ul>
       </div>
-      
     </div>
   </nav>
 </header>

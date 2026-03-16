@@ -15,9 +15,7 @@
     </li>
   </ol>
 </div>
-
 <%= render partial: 'layouts/components/date_change' %>
-
 <div class="flex justify-center">
   <div class="w-4/5 p-4 bg-white border border-gray-200 rounded-lg shadow-md sm:p-6 lg:p-8">
     <div class="float-right">
@@ -30,13 +28,10 @@
         <% end %>
       <% end %>
     </div>
-    
     <h3 id="team-settings"><%= @team.name %> Team Settings</h3>
-    
     <p>
       <span>Users:</span>
       <%= @team.users.map(&:name).join(", ") %>
-      
       <% if @team.has_reminder %>
         <span>| Reminder at: </span>
         <%= "#{@team.reminder_time.in_time_zone(current_user.time_zone)
@@ -44,7 +39,6 @@
           (#{@team.reminder_time.in_time_zone(current_user.time_zone)
           .strftime("%H:%M")})" %>
       <% end %>
-      
       <% if @team.has_recap %>
         <span>| Recap at: </span>
         <%= "#{@team.recap_time.in_time_zone(current_user.time_zone)
