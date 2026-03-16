@@ -44,6 +44,10 @@ module ApplicationHelper
 
   # Add method for user avatars
   def user_avatar_url(email, size = 45)
+    if email.blank?
+      return "https://ui-avatars.com/api/?name=User&size=#{size}"
+    end
+
     email = email.downcase
     hash = Digest::MD5.hexdigest(email)
     "https://www.gravatar.com/avatar/#{hash}?s=#{size}&d=mp"

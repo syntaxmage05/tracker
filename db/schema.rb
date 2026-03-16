@@ -69,6 +69,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_16_225720) do
   end
 
   create_table "tasks", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "type"
     t.string "title"
     t.boolean "is_completed"
     t.datetime "created_at", null: false

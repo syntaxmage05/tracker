@@ -2,7 +2,7 @@
 
 FactoryBot.define do
   factory :standup do
-    user { nil }
+    user
     standup_date { "2026-03-13" }
   end
 end
