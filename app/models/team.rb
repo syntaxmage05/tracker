@@ -7,6 +7,8 @@ class Team < ApplicationRecord
   has_many :days, class_name: "DaysOfWeekMembership", dependent: :delete_all
 
   validates :account, :timezone, :name, presence: true
+  validates :reminder_time, presence: true, if: :has_reminder?
+  validates :recap_time, presence: true, if: :has_recap?
 
   accepts_nested_attributes_for :days
 end
