@@ -10,7 +10,7 @@
       <% end %>
       <div class="float-right">
         <%= link_to edit_team_path(team) do %>
-          <%= heroicon "pencil-alt", class: 'inline' %>
+          <%= heroicon "pencil", class: 'inline' %>
         <% end %>
         <%= button_to team_path(team), {form_class: 'inline', method: :delete, form: {data: { turbo_confirm: "Are you sure? Deleting this team is permanent"}}} do %>
           <%= heroicon "trash", class: 'inline' %>

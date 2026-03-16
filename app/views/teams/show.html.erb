@@ -1,0 +1,57 @@
+<div class="flex p-5" aria-label="Breadcrumb">
+  <ol class="inline-flex items-center space-x-1 md:space-x-3">
+    <li class="inline-flex items-center">
+      <h2 class="inline-flex items-center font-medium text-gray-700 hover:text-gray-900">
+        Teams
+      </h2>
+    </li>
+    <li class="inline-flex items-center">
+      <h2 class="inline-flex items-center font-medium text-gray-700 hover:text-gray-900">
+        <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+        </svg>
+        <%= @team.name %>
+      </h2>
+    </li>
+  </ol>
+</div>
+
+<%= render partial: 'layouts/components/date_change' %>
+
+<div class="flex justify-center">
+  <div class="w-4/5 p-4 bg-white border border-gray-200 rounded-lg shadow-md sm:p-6 lg:p-8">
+    <div class="float-right">
+      <% if current_user.has_role? :admin, current_account %>
+        <%= link_to edit_team_path(@team), class: 'inline' do %>
+          <%= heroicon "pencil", class: 'inline' %>
+        <% end %>
+        <%= button_to team_path(@team), {form_class: 'inline', method: :delete, form: {data: { turbo_confirm: "Are you sure? Deleting this team is permanent"}}} do %>
+          <%= heroicon "trash", class: 'inline' %>
+        <% end %>
+      <% end %>
+    </div>
+    
+    <h3 id="team-settings"><%= @team.name %> Team Settings</h3>
+    
+    <p>
+      <span>Users:</span>
+      <%= @team.users.map(&:name).join(", ") %>
+      
+      <% if @team.has_reminder %>
+        <span>| Reminder at: </span>
+        <%= "#{@team.reminder_time.in_time_zone(current_user.time_zone)
+          .strftime("%I:%M %p %Z")}
+          (#{@team.reminder_time.in_time_zone(current_user.time_zone)
+          .strftime("%H:%M")})" %>
+      <% end %>
+      
+      <% if @team.has_recap %>
+        <span>| Recap at: </span>
+        <%= "#{@team.recap_time.in_time_zone(current_user.time_zone)
+          .strftime("%I:%M %p %Z")}
+          (#{@team.recap_time.in_time_zone(current_user.time_zone)
+          .strftime("%H:%M")}) " %>
+      <% end %>
+    </p>
+  </div>
+</div>
