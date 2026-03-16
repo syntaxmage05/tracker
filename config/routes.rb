@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
-  resources :standups
   mount LetterOpenerWeb::Engine, at: "/letter_opener" if Rails.env.development?
+  resources :standups
 
   devise_for :users, controllers: { registrations: "registrations" }
   resource :accounts

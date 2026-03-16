@@ -41,4 +41,11 @@ module ApplicationHelper
     end
     nil
   end
+
+  # Add method for user avatars
+  def user_avatar_url(email, size = 45)
+    email = email.downcase
+    hash = Digest::MD5.hexdigest(email)
+    "https://www.gravatar.com/avatar/#{hash}?s=#{size}&d=mp"
+  end
 end
