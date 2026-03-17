@@ -81,3 +81,20 @@ RSpec.configure do |config|
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
 end
+
+# Set Chrome as the default driver
+Capybara.default_driver = :selenium_chrome
+Capybara.javascript_driver = :selenium_chrome
+
+# Or for headless Chrome (for CI environments)
+Capybara.default_driver = :selenium_chrome_headless
+Capybara.javascript_driver = :selenium_chrome_headless
+
+# test the existence of validators and relationships
+Shoulda::Matchers.configure do |config|
+  config.integrate do |with|
+    with.test_framework :rspec
+
+    with.library :rails
+  end
+end

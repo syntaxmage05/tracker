@@ -1,0 +1,13 @@
+<div class="flex nested-<%= f.object.class.name.downcase %>" data-new-record="<%= f.object.new_record? %>">
+  <%= f.text_field :title, 
+      class: 'block w-full p-2.5 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 inline',
+      placeholder: placeholder %>
+  <span class="inline align-middle input-group-append">
+    <button type="button" 
+            class="px-5 py-2.5 ml-2 mr-2 text-sm font-medium text-center text-red-700 border border-red-700 rounded-lg hover:text-white hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300"
+            data-action="nested-form#remove">
+      <%= heroicon 'trash', class: 'inline' %>
+    </button>
+    <%= f.hidden_field :_destroy %>
+  </span>
+</div>

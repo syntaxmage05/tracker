@@ -59,8 +59,9 @@ group :development, :test do
   gem "rspec-rails"
   gem "rubocop-rails-omakase", require: false
   gem "selenium-webdriver"
+  gem "shoulda-matchers"
   gem "simplecov", require: false, group: :test
-  gem "webdrivers"
+  gem "webdrivers", require: false
 end
 
 group :development do
@@ -89,3 +90,4 @@ gem "sinatra", require: nil
 gem "slack-notifier"
 
 gem "lefthook", "~> 2.1"
+gem "rails_heroicon"

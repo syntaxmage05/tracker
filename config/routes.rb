@@ -3,6 +3,10 @@
 Rails.application.routes.draw do
   mount LetterOpenerWeb::Engine, at: "/letter_opener" if Rails.env.development?
 
+  get "s/new/(:date)", to: "standups#new", as: "new_standup"
+  get "s/edit/(:date)", to: "standups#edit", as: "edit_standup"
+  resources :standups, path: "s", except: [:new, :edit]
+
   devise_for :users, controllers: { registrations: "registrations" }
   resource :accounts
 
@@ -11,9 +15,20 @@ Rails.application.routes.draw do
   get "user/password", to: "users#password", as: "my_password"
   patch "user/update_password", to: "users#update_password", as: "my_update_password"
 
+  get "t/:id/s", to: "teams/standups#index", as: "team_standups"
+  get "t/:id/s/(:date)", to: "teams/standups#index", as: "team_standups_by_date"
+  get "t/:id/(:date)", to: "teams#show"
+  resources :teams, path: "t"
+
   scope "account", as: "account" do
-    resources :users, controllers: "users"
+    resources :users do
+      member do
+        get "s", to: "users/standups#index", as: "standups"
+      end
+    end
   end
+
+  get "dates/:date", to: "dates#update", as: "update_date"
 
   get "activity/mine"
   get "activity/feed"

@@ -1,0 +1,49 @@
+<!-- app/views/users/standups/index.html.erb -->
+<div class="flex p-5" aria-label="Breadcrumb">
+  <ol class="inline-flex items-center space-x-1 md:space-x-3">
+    <li class="inline-flex items-center">
+      <h2 class="inline-flex items-center font-medium text-gray-700 hover:text-gray-900">
+        Users
+      </h2>
+    </li>
+    <li class="inline-flex items-center">
+      <h2 class="inline-flex items-center font-medium text-gray-700 hover:text-gray-900">
+        <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+        </svg>
+        <%= @user.name %>
+      </h2>
+    </li>
+  </ol>
+</div>
+<div class="flex justify-center">
+  <div class="w-4/5 p-4 bg-white border border-gray-200 rounded-lg shadow-md sm:p-6 lg:p-8">
+    <h5 class="text-xl font-bold leading-none text-gray-900">Information:</h5>
+    <p>
+      <strong>Name</strong>
+      <%= ": #{@user.name}" %>
+    </p>
+    <p>
+      <strong>Email</strong>
+      <%= ": #{@user.email}" %>
+    </p>
+    <p>
+      <strong>Timezone</strong>
+      <%= ": #{@user.time_zone || 'not set'}" %>
+    </p>
+  </div>
+</div>
+<div class="flex justify-center">
+  <div class="w-4/5 p-4 sm:p-6 lg:p-8">
+    <div class="grid grid-cols-3 auto-cols-auto gap-4">
+      <% if @standups.empty? %>
+        <div class="row">
+          <div class="col">
+            <p class="text-gray-500">No standups are available to display</p>
+          </div>
+        </div>
+      <% end %>
+      <%= render partial: 'standups/standup', collection: @standups %>
+    </div>
+  </div>
+</div>

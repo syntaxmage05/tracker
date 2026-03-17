@@ -1,0 +1,48 @@
+<% if team.id.blank? %>
+  <%= link_to new_team_path, { id: 'new_team'} do %>
+    <%= heroicon "plus", class: 'h-20 w-20' %>
+  <% end %>
+<% else %>
+  <div class="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow-md hover:bg-gray-100">
+    <div>
+      <%= link_to team_path(team) do %>
+        <h5 class="inline mb-2 text-2xl font-bold tracking-tight text-gray-900"><%= team.name %></h5>
+      <% end %>
+      <div class="float-right">
+        <%= link_to edit_team_path(team) do %>
+          <%= heroicon "pencil", class: 'inline' %>
+        <% end %>
+        <%= button_to team_path(team), {form_class: 'inline', method: :delete, form: {data: { turbo_confirm: "Are you sure? Deleting this team is permanent"}}} do %>
+          <%= heroicon "trash", class: 'inline' %>
+        <% end %>
+      </div>
+    </div>
+    <%= link_to team_path(team) do %>
+      <h6>Description: </h6>
+      <p>
+        <%=team.description %>
+      </p>
+      <h6> Members </h6>
+      <div class="team-members">
+        <% if team.users.blank? %>
+          <p>
+            No Users have been added to the team
+          </p>
+        <% else %>
+          <%=team.users.pluck(:name).join(', ') %>
+        <% end %>
+      </div>
+      <h6>Standup Details</h6>
+      <div class="row m-t-sm">
+        <div class="col-sm-6">
+          <%= "On days #{team.days.pluck(:day).map(&:humanize).join(', ')}" %>
+        </div>
+        <div class="col-sm-6">
+          <%="Reminder is #{team.reminder_time.strftime("at %I:%M%p")}" %>
+          <br />
+          <%="Recap is #{team.recap_time.strftime("at %I:%M%p")}" %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% end %>
