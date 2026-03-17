@@ -70,8 +70,8 @@ class StandupsController < ApplicationController
       if params[:date].blank?
         redirect_to(
           update_date_path(
-            date: Date.today.iso8601,
-            reload_path: "/s/#{action_name}/#{Date.today.iso8601}"
+            date: Time.zone.today.iso8601,
+            reload_path: "/s/#{action_name}/#{Time.zone.today.iso8601}"
           )
         ) and return true
       end

@@ -1,0 +1,33 @@
+<!-- app/views/teams/standups/index.html.erb -->
+<div class="flex p-5" aria-label="Breadcrumb">
+  <ol class="inline-flex items-center space-x-1 md:space-x-3">
+    <li class="inline-flex items-center">
+      <%= link_to "Teams", teams_path, class: "inline-flex items-center font-medium text-gray-700 hover:text-gray-900" %>
+    </li>
+    <li class="inline-flex items-center">
+      <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+        <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+      </svg>
+      <span class="ml-1 font-medium text-gray-700 md:ml-2"><%= @team.name %> Standups</span>
+    </li>
+  </ol>
+</div>
+<!-- Date Picker Component -->
+<%= render partial: 'layouts/components/date_change', locals: { reload_path: team_standups_by_date_path(@team) } %>
+<div class="flex justify-center mt-6">
+  <div class="w-4/5 px-4 py-1 bg-white border border-gray-200 rounded-lg shadow-md">
+    <h3 class="py-2 text-lg font-bold"><%= @team.name %>'s Standups</h3>
+  </div>
+</div>
+<div class="flex justify-center">
+  <div class="w-4/5 p-4 sm:p-6 lg:p-8">
+    <div class="grid grid-cols-3 auto-cols-auto gap-4">
+      <% if @standups.empty? %>
+        <div class="col-span-3 text-center">
+          <p class="text-gray-500">No standups found for this date</p>
+        </div>
+      <% end %>
+      <%= render partial: 'standups/standup', collection: @standups %>
+    </div>
+  </div>
+</div>

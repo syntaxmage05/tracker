@@ -1,11 +1,16 @@
 <div class="flex p-5" aria-label="Breadcrumb">
-  <ol class="inline-flex items-center space-x-3">
+  <ol class="inline-flex items-center space-x-1 md:space-x-3">
     <li class="inline-flex items-center">
-      <h2 class="font-medium text-gray-700 hover:text-gray-900">
+      <h2 class="inline-flex items-center font-medium text-gray-700 hover:text-gray-900">
         My Activity
       </h2>
     </li>
   </ol>
 </div>
-<%= render "layouts/components/date_change"%>
+<div class="flex justify-center">
+  <div class="p-4">
+    <div class="grid grid-cols-3 auto-cols-auto gap-4">
+      <%= render @standups %>
+    </div>
+  </div>
 </div>

@@ -6,10 +6,11 @@ RSpec.describe "activity/mine.html.erb", type: :view do
   before do
     allow(view).to receive(:current_date)
       .and_return(Time.zone.today.strftime("%a %-d %b %Y"))
+    assign(:standups, [FactoryBot.create(:standup)])
   end
 
-  it "renders the word feed" do
-    render template: "activity/mine"
+  it "renders the word My Activity" do
+    render template: "activity/mine.html.erb"
     expect(rendered).to match(/My Activity/)
   end
 end

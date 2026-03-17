@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateTaskMemberships < ActiveRecord::Migration[8.0]
   def change
     create_table :task_memberships, id: :uuid do |t|

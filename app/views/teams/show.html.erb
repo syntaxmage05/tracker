@@ -1,3 +1,4 @@
+<!-- app/views/teams/show.html.erb -->
 <div class="flex p-5" aria-label="Breadcrumb">
   <ol class="inline-flex items-center space-x-1 md:space-x-3">
     <li class="inline-flex items-center">
@@ -15,37 +16,58 @@
     </li>
   </ol>
 </div>
-<%= render partial: 'layouts/components/date_change' %>
 <div class="flex justify-center">
   <div class="w-4/5 p-4 bg-white border border-gray-200 rounded-lg shadow-md sm:p-6 lg:p-8">
     <div class="float-right">
       <% if current_user.has_role? :admin, current_account %>
         <%= link_to edit_team_path(@team), class: 'inline' do %>
-          <%= heroicon "pencil", class: 'inline' %>
+          <%= heroicon "pencil", class: 'inline' %>  <!-- Changed from pencil-alt -->
         <% end %>
-        <%= button_to team_path(@team), {form_class: 'inline', method: :delete, form: {data: { turbo_confirm: "Are you sure? Deleting this team is permanent"}}} do %>
+        <%= button_to team_path(@team), {
+              form_class: 'inline',
+              method: :delete,
+              form: { data: { turbo_confirm: "Are you sure? Deleting this team is permanent" } }
+            } do %>
           <%= heroicon "trash", class: 'inline' %>
         <% end %>
       <% end %>
     </div>
-    <h3 id="team-settings"><%= @team.name %> Team Settings</h3>
-    <p>
-      <span>Users:</span>
-      <%= @team.users.map(&:name).join(", ") %>
-      <% if @team.has_reminder %>
-        <span>| Reminder at: </span>
-        <%= "#{@team.reminder_time.in_time_zone(current_user.time_zone)
-          .strftime("%I:%M %p %Z")}
-          (#{@team.reminder_time.in_time_zone(current_user.time_zone)
-          .strftime("%H:%M")})" %>
+    <h3 id="team-settings" class="text-xl font-bold leading-none text-gray-900"><%= @team.name %> Team Settings</h3>
+    <p class="mt-2">
+      <span class="font-medium">Users:</span>
+      <%= @team.users.map(&:email).join(", ") %>
+      <% if @team.has_reminder? && @team.reminder_time.present? %>
+        <span class="ml-2 font-medium">| Reminder at:</span>
+        <%= @team.reminder_time.in_time_zone(current_user.time_zone).strftime("%I:%M %p %Z") %>
+        (<%= @team.reminder_time.in_time_zone(current_user.time_zone).strftime("%H:%M") %>)
       <% end %>
-      <% if @team.has_recap %>
-        <span>| Recap at: </span>
-        <%= "#{@team.recap_time.in_time_zone(current_user.time_zone)
-          .strftime("%I:%M %p %Z")}
-          (#{@team.recap_time.in_time_zone(current_user.time_zone)
-          .strftime("%H:%M")}) " %>
+      <% if @team.has_recap? && @team.recap_time.present? %>
+        <span class="ml-2 font-medium">| Recap at:</span>
+        <%= @team.recap_time.in_time_zone(current_user.time_zone).strftime("%I:%M %p %Z") %>
+        (<%= @team.recap_time.in_time_zone(current_user.time_zone).strftime("%H:%M") %>)
       <% end %>
     </p>
+  </div>
+</div>
+<div class="flex justify-center mt-6">
+  <div class="w-4/5 px-4 py-1 bg-white border border-gray-200 rounded-lg shadow-md">
+    <div class="float-right">
+      <%= link_to "See More", team_standups_path(@team), class: "text-blue-600 hover:text-blue-800" %>
+    </div>
+    <h3 class="py-2 text-lg font-bold card-title"><%= "#{@team.name}'s Standups Today" %></h3>
+  </div>
+</div>
+<div class="flex justify-center">
+  <div class="w-4/5 p-4 sm:p-6 lg:p-8">
+    <div class="grid grid-cols-3 auto-cols-auto gap-4">
+      <% if @standups.empty? %>
+        <div class="row">
+          <div class="col">
+            <p class="text-gray-500">No standups are available to display</p>
+          </div>
+        </div>
+      <% end %>
+      <%= render partial: 'standups/standup', collection: @standups %>
+    </div>
   </div>
 </div>

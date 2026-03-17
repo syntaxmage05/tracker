@@ -6,24 +6,39 @@
 
 # RSpec.describe "DateChanges", type: :system do
 #   login_admin
+#   let(:team) { FactoryBot.create(:team, account_id: @admin.account.id) }
 
-#   let(:yesterday) { Time.zone.today - 1.day }
-#   let(:tomorrow) { Time.zone.today + 1.day }
+#   it "changes the date when the back arrow is pressed" do
+#     visit team_standups_path(team)
+#     click_on(id: "date_backwards")
 
-#   before do
-#     visit activity_mine_path
+#     expect(page).to have_content(
+#       (Time.zone.today - 1.day)
+#         .strftime("%a, %b #{(Time.zone.today - 1.day).day.ordinalize}")
+#     )
 #   end
 
-#   it "can select a date from the Flatpickr date picker", js: true do
-#     visit activity_mine_path
+#   it "changes the date when the forwards arrow is pressed" do
+#     visit team_standups_path(team)
+#     click_on(id: "date_forward")
+
+#     expect(page).to have_content(
+#       (Time.zone.today + 1.day)
+#         .strftime("%a, %b #{(Time.zone.today + 1.day).day.ordinalize}")
+#     )
+#   end
+
+#   it "should be able to visit standups and move date from picker", js: true do
+#     visit team_standups_path(team)
+#     date = (Time.zone.now + 1.day).strftime("%B %-d, %Y")
 
 #     find("#datePicker").click
+#     expect(page).to have_selector(".flatpickr-days")
+#     find(".flatpickr-calendar .flatpickr-day[aria-label='#{date}']").click
 
-#     date_label = tomorrow.strftime("%B %-d, %Y")
-#     day_element = find(".flatpickr-day[aria-label='#{date_label}']", visible: false)
-#     page.execute_script("arguments[0].click();", day_element)
-
-#     # Validate hidden input value updated
-#     expect(find("#datePickerInput", visible: false).value).to eq(tomorrow.strftime("%Y-%m-%d"))
+#     expect(page).to have_content(
+#       (Time.zone.now + 1.day)
+#         .strftime("%a, %b #{(Time.zone.now + 1.day).day.ordinalize}")
+#     )
 #   end
 # end

@@ -9,7 +9,7 @@ class TeamsController < ApplicationController
   end
 
   def show
-    @team = Team.includes(:users).find(params[:id])
+    set_teams_and_standups(Time.zone.today.iso8601)
   end
 
   def new
