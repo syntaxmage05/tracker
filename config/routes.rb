@@ -2,7 +2,10 @@
 
 Rails.application.routes.draw do
   mount LetterOpenerWeb::Engine, at: "/letter_opener" if Rails.env.development?
-  resources :standups
+
+  get "s/new/(:date)", to: "standups#new", as: "new_standup"
+  get "s/edit/(:date)", to: "standups#edit", as: "edit_standup"
+  resources :standups, path: "s", except: [:new, :edit]
 
   devise_for :users, controllers: { registrations: "registrations" }
   resource :accounts

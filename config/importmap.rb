@@ -14,3 +14,4 @@ pin "stimulus-use" # @0.51.3
 pin_all_from "app/javascript/lib", under: "lib"
 pin "flatpickr" # @4.6.13
 pin "stimulus-flatpickr" # @3.0.0
+pin "stimulus-rails-nested-form" # @4.1.0

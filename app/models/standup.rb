@@ -17,4 +17,16 @@ class Standup < ApplicationRecord
     -> { where(type: "Blocker") },
     through: :task_memberships,
     source: :task
+
+  accepts_nested_attributes_for :dids,
+    reject_if: :all_blank,
+    allow_destroy: true
+
+  accepts_nested_attributes_for :todos,
+    reject_if: :all_blank,
+    allow_destroy: true
+
+  accepts_nested_attributes_for :blockers,
+    reject_if: :all_blank,
+    allow_destroy: true
 end
