@@ -1,73 +1,83 @@
-<!-- app/views/teams/show.html.erb -->
 <div class="flex p-5" aria-label="Breadcrumb">
   <ol class="inline-flex items-center space-x-1 md:space-x-3">
+    <!-- Teams -->
     <li class="inline-flex items-center">
       <h2 class="inline-flex items-center font-medium text-gray-700 hover:text-gray-900">
         Teams
       </h2>
     </li>
+    <!-- Current Team -->
     <li class="inline-flex items-center">
+      <svg class="w-5 h-5 text-gray-400 mx-2" fill="currentColor" viewBox="0 0 20 20">
+        <path fill-rule="evenodd"
+          d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+          clip-rule="evenodd">
+        </path>
+      </svg>
       <h2 class="inline-flex items-center font-medium text-gray-700 hover:text-gray-900">
-        <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-          <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
-        </svg>
         <%= @team.name %>
       </h2>
     </li>
   </ol>
 </div>
+<!-- Team Settings Card -->
 <div class="flex justify-center">
   <div class="w-4/5 p-4 bg-white border border-gray-200 rounded-lg shadow-md sm:p-6 lg:p-8">
-    <div class="float-right">
+    <!-- Actions -->
+    <div class="float-right space-x-2">
       <% if current_user.has_role? :admin, current_account %>
-        <%= link_to edit_team_path(@team), class: 'inline' do %>
-          <%= heroicon "pencil", class: 'inline' %>  <!-- Changed from pencil-alt -->
+        <%= link_to edit_team_path(@team), class: "inline" do %>
+          <%= heroicon "pencil", class: "inline w-5 h-5" %>
         <% end %>
-        <%= button_to team_path(@team), {
-              form_class: 'inline',
+        <%= button_to team_path(@team),
               method: :delete,
-              form: { data: { turbo_confirm: "Are you sure? Deleting this team is permanent" } }
-            } do %>
-          <%= heroicon "trash", class: 'inline' %>
+              form: { data: { turbo_confirm: "Are you sure? Deleting this team is permanent" } },
+              class: "inline" do %>
+          <%= heroicon "trash", class: "inline w-5 h-5 text-red-500" %>
         <% end %>
       <% end %>
     </div>
-    <h3 id="team-settings" class="text-xl font-bold leading-none text-gray-900"><%= @team.name %> Team Settings</h3>
-    <p class="mt-2">
+    <!-- Title -->
+    <h3 class="text-lg font-semibold mb-2">
+      <%= @team.name %> Team Settings
+    </h3>
+    <!-- Details -->
+    <p class="text-sm text-gray-700">
       <span class="font-medium">Users:</span>
       <%= @team.users.map(&:email).join(", ") %>
-      <% if @team.has_reminder? && @team.reminder_time.present? %>
-        <span class="ml-2 font-medium">| Reminder at:</span>
+      <% if @team.has_reminder %>
+        <span class="mx-2">|</span>
+        <span class="font-medium">Reminder:</span>
         <%= @team.reminder_time.in_time_zone(current_user.time_zone).strftime("%I:%M %p %Z") %>
         (<%= @team.reminder_time.in_time_zone(current_user.time_zone).strftime("%H:%M") %>)
       <% end %>
-      <% if @team.has_recap? && @team.recap_time.present? %>
-        <span class="ml-2 font-medium">| Recap at:</span>
+      <% if @team.has_recap %>
+        <span class="mx-2">|</span>
+        <span class="font-medium">Recap:</span>
         <%= @team.recap_time.in_time_zone(current_user.time_zone).strftime("%I:%M %p %Z") %>
         (<%= @team.recap_time.in_time_zone(current_user.time_zone).strftime("%H:%M") %>)
       <% end %>
     </p>
   </div>
 </div>
+<!-- Standups Header -->
 <div class="flex justify-center mt-6">
-  <div class="w-4/5 px-4 py-1 bg-white border border-gray-200 rounded-lg shadow-md">
-    <div class="float-right">
-      <%= link_to "See More", team_standups_path(@team), class: "text-blue-600 hover:text-blue-800" %>
-    </div>
-    <h3 class="py-2 text-lg font-bold card-title"><%= "#{@team.name}'s Standups Today" %></h3>
+  <div class="w-4/5 px-4 py-2 bg-white border border-gray-200 rounded-lg shadow-md flex justify-between items-center">
+    <h3 class="font-semibold text-gray-800">
+      "<%= @team.name %>"'s Standups Today
+    </h3>
+    <%= link_to "See More", team_standups_path(@team), class: "text-blue-600 hover:underline" %>
   </div>
 </div>
+<!-- Standups Grid -->
 <div class="flex justify-center">
   <div class="w-4/5 p-4 sm:p-6 lg:p-8">
-    <div class="grid grid-cols-3 auto-cols-auto gap-4">
-      <% if @standups.empty? %>
-        <div class="row">
-          <div class="col">
-            <p class="text-gray-500">No standups are available to display</p>
-          </div>
-        </div>
-      <% end %>
-      <%= render partial: 'standups/standup', collection: @standups %>
-    </div>
+    <% if @standups.empty? %>
+      <p class="text-gray-500">No standups are available to display</p>
+    <% else %>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <%= render partial: "standups/standup", collection: @standups %>
+      </div>
+    <% end %>
   </div>
 </div>

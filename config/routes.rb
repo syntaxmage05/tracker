@@ -15,6 +15,8 @@ Rails.application.routes.draw do
   get "user/password", to: "users#password", as: "my_password"
   patch "user/update_password", to: "users#update_password", as: "my_update_password"
 
+  get "t/new", to: "teams#new"
+  get "t/:id/edit", to: "teams#edit"
   get "t/:id/s", to: "teams/standups#index", as: "team_standups"
   get "t/:id/s/(:date)", to: "teams/standups#index", as: "team_standups_by_date"
   get "t/:id/(:date)", to: "teams#show"
