@@ -21,8 +21,9 @@ class ApplicationController < ActionController::Base
   end
 
   def current_date
-    session[:current_date] = session[:current_date] || Time.zone.today.iso8601
-    @_current_date ||= session[:current_date]
+    # session[:current_date] = session[:current_date] || Time.zone.today.iso8601
+    # @_current_date ||= session[:current_date]
+    @_current_date ||= session[:current_date] ||= Time.zone.today.iso8601
   end
 
   def visible_teams
