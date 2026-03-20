@@ -8,13 +8,12 @@ RSpec.describe "SignInProcesses", type: :system do
   end
 
   let(:password) { "password" }
+  let(:account) { FactoryBot.create(:account) }
 
   let(:user) do
-    FactoryBot.create(
-      :user, {
-        password: password,
-        password_confirmation: password
-      })
+    create(:user, account: account, password: password).tap do |u|
+      u.add_role(:admin, account)
+    end
   end
 
   it "should require the user to log in successfully logs in" do

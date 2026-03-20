@@ -3,7 +3,7 @@
 # app/controllers/users/standups_controller.rb
 class Users::StandupsController < ApplicationController
   def index
-    @user = User.find(params[:id]) # Make sure this is set
+    @user ||= User.find(params[:id]) # Make sure this is set
     @standups = @user.standups
       .includes(:dids, :todos, :blockers)
       .references(:tasks)

@@ -10,7 +10,7 @@ RSpec.describe "activity/mine.html.erb", type: :view do
   end
 
   it "renders the word My Activity" do
-    render template: "activity/mine.html.erb"
+    render template: "activity/mine"
     expect(rendered).to match(/My Activity/)
   end
 end
