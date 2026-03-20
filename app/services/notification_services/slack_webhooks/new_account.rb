@@ -6,6 +6,7 @@ module NotificationServices
     class NewAccount < Base
       WEBHOOK_URL = Rails.application.credentials.slack[:webhook_url].freeze
 
+      attr_reader :user, :account
       def initialize(params)
         @user = params[:user]
         @account = params[:account]
@@ -16,8 +17,6 @@ module NotificationServices
       end
 
       private
-
-        attr_reader :user, :account
 
         def message
           "A New User has appeared! #{account.name} - #{user.name}"
