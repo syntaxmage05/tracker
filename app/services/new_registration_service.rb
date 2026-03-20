@@ -3,6 +3,7 @@
 class NewRegistrationService
   Result = ImmutableStruct.new(:success, :user, :account, :error)
 
+  attr_reader :user, :account
   def initialize(params)
     @user = params[:user]
     @account = params[:account]
@@ -24,8 +25,6 @@ class NewRegistrationService
   end
 
   private
-
-    attr_reader :user, :account
 
     def account_create
       post_account_setup if account.save!
