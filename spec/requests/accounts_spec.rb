@@ -3,6 +3,10 @@
 require "rails_helper"
 
 RSpec.describe "Accounts", type: :request do
+  before do
+    allow(Slack::Notifier).to receive_message_chain(:new, :ping) { nil }
+  end
+
   before(:each) do
     user = User.create!(
       name: "John",

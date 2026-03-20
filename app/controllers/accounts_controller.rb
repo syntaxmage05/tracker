@@ -13,12 +13,14 @@ class AccountsController < ApplicationController
   def create
     @account = Account.new(account_params)
 
-    if @account.save
-      current_user.account = @account
-      current_user.add_role :admin, @account
-      current_user.save
+    result = NewRegistrationService
+      .new(account: @account, user: current_user)
+      .process_registration
+
+    if result.success
       redirect_to root_path, success: "Your account has been created!"
     else
+      @account = result.account
       render :new
     end
   end
