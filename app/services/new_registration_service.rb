@@ -17,7 +17,7 @@ class NewRegistrationService
     Result.new(success: true, user: user, account: account, error: nil)
   rescue ActiveRecord::RecordInvalid, Slack::Notifier => exception
     Result.new(
-      success?: false,
+      success: false,
       user: user,
       account: account,
       error: exception.message
@@ -41,11 +41,11 @@ class NewRegistrationService
     end
 
     def notify_slack
-      notifier = Slack::Notifier.new(
-        Rails.application.credentials.slack[:webhook_url]
-      )
-      notifier.ping(
-        "A New User has appeared! # -# || ENV: #"
-      )
+      NotificationServices::SlackWebhooks::NewAccount
+        .new(
+          account: account,
+          user: user
+        )
+        .send_message
     end
 end
