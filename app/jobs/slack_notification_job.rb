@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class SlackNotificationJob < ApplicationJob
-  queue_as :default
+  queue_as :notifications
 
   def perform(user)
     NotificationServices::SlackWebhooks::NewAccount

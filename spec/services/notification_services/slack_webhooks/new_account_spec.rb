@@ -15,7 +15,7 @@ describe NotificationServices::SlackWebhooks::NewAccount do
             user: user
           ).send(:message)
         ).to eql(
-          "A New User has appeared! #{account.name} - #{user.name}"
+          "A New User has appeared! #{account.name} - #{user.email}"
         )
       end
 
