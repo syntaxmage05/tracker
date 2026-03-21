@@ -1,16 +1,33 @@
-<div class="container">
-  <h1 class="text-center mb-4">
-    Tracker
-  </h1>
-  <div class="card mb-4">
-    <div class="card-body">
-      <h3 class="text-center mb-4">
-        <%= @team.name %> Reminder!
-      </h3>
-      <p class="mb-4">
-        Just wanted to remind you to add your standup for the team: <%= @team.name %>
-      </p>
-      <%= link_to "Add Your Standup", new_standup_url(), { class: "btn btn-primary btn-lg mx-auto mt-2", style: "width: 95%"}%>
+<div class="container px-4 py-8 mx-auto max-w-2xl">
+  <div class="text-center mb-8">
+    <h1 class="text-3xl font-bold text-gray-900 mb-2">
+      Tracker
+    </h1>
+    <div class="w-16 h-1 bg-blue-500 mx-auto rounded-full"></div>
+  </div>
+  <div class="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
+    <div class="bg-gradient-to-r from-blue-500 to-blue-600 h-1"></div>
+    <div class="p-6 md:p-8">
+      <div class="text-center mb-6">
+        <div class="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-3">
+          <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+        </div>
+        <h2 class="text-2xl font-bold text-gray-800">
+          <%= @team.name %>
+        </h2>
+        <p class="text-sm text-gray-500 mt-1">Standup Reminder</p>
+      </div>
+      <div class="bg-blue-50 border border-blue-100 rounded-lg p-4 mb-6">
+        <p class="text-gray-700 text-center leading-relaxed">
+          Just wanted to remind you to add your standup for the team: 
+          <strong class="text-blue-700"><%= @team.name %></strong>
+        </p>
+      </div>
+      <%= link_to new_standup_url(), class: "block w-full bg-blue-600 hover:bg-blue-700 text-white text-center font-semibold py-3 px-4 rounded-lg transition duration-200 shadow-md hover:shadow-lg" do %>
+        Add Your Standup
+      <% end %>
     </div>
   </div>
 </div>
