@@ -90,6 +90,6 @@ gem "sidekiq-cron"
 gem "sinatra", require: nil
 gem "slack-notifier"
 
+gem "bootstrap-email"
 gem "lefthook", "~> 2.1"
 gem "rails_heroicon"
-gem 'bootstrap-email'

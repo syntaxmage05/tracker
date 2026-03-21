@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "rails_helper"
+include ActiveSupport::Testing::TimeHelpers
 
 RSpec.describe Reminders::FindTeamsJob do
   include ActiveJob::TestHelper
@@ -18,27 +19,25 @@ RSpec.describe Reminders::FindTeamsJob do
 
   describe "finding teams with reminders" do
     it "finds a team with reminders" do
-      team = FactoryBot.create(
-        :team,
-        has_reminder: true,
-        reminder_time: Time.at(
-          Time.now.utc.to_i - (Time.now.utc.to_i % 15.minutes)
-        ).utc
-      )
+      travel_to Time.utc(2026, 3, 21, 14, 30) do
+        team = FactoryBot.create(
+          :team,
+          has_reminder: true,
+          reminder_time: Time.current, # matches travel_to
+          timezone: "UTC"
+        )
 
-      team.update(
-        days: [
-          DaysOfWeekMembership.new(
-            team_id: team.id,
-            day: Time.now.utc.strftime("%A").downcase
-          )
-        ]
-      )
+        team.update(
+          days: [
+            DaysOfWeekMembership.new(team_id: team.id, day: Time.current.strftime("%A").downcase)
+          ]
+        )
 
-      job = Reminders::FindTeamsJob.new
-      job.perform_now
+        job = Reminders::FindTeamsJob.new
+        job.perform_now
 
-      expect(job.instance_variable_get(:@teams)).to eq([team])
+        expect(job.instance_variable_get(:@_teams)).to eq([team])
+      end
     end
   end
 end
