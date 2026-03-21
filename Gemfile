@@ -86,8 +86,10 @@ gem "gravatar_image_tag"
 gem "money-rails"
 gem "rack-cors", require: "rack/cors"
 gem "sidekiq"
+gem "sidekiq-cron"
 gem "sinatra", require: nil
 gem "slack-notifier"
 
 gem "lefthook", "~> 2.1"
 gem "rails_heroicon"
+gem 'bootstrap-email'

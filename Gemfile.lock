@@ -105,6 +105,12 @@ GEM
     bindex (0.8.1)
     bootsnap (1.23.0)
       msgpack (~> 1.2)
+    bootstrap-email (1.8.1)
+      htmlbeautifier (~> 1.3)
+      nokogiri (~> 1.6)
+      ostruct (~> 0.6)
+      premailer (~> 1.7)
+      sass-embedded (~> 1.55)
     brakeman (8.0.4)
       racc
     builder (3.3.0)
@@ -123,6 +129,11 @@ GEM
     concurrent-ruby (1.3.6)
     connection_pool (3.0.2)
     crass (1.0.6)
+    cronex (0.15.0)
+      tzinfo
+      unicode (>= 0.4.4.5)
+    css_parser (2.0.0)
+      addressable
     date (3.5.1)
     debug (1.11.1)
       irb (~> 1.10)
@@ -159,7 +170,30 @@ GEM
       raabro (~> 1.4)
     globalid (1.3.0)
       activesupport (>= 6.1)
+    google-protobuf (4.34.1)
+      bigdecimal
+      rake (~> 13.3)
+    google-protobuf (4.34.1-aarch64-linux-gnu)
+      bigdecimal
+      rake (~> 13.3)
+    google-protobuf (4.34.1-aarch64-linux-musl)
+      bigdecimal
+      rake (~> 13.3)
+    google-protobuf (4.34.1-arm64-darwin)
+      bigdecimal
+      rake (~> 13.3)
+    google-protobuf (4.34.1-x86_64-darwin)
+      bigdecimal
+      rake (~> 13.3)
+    google-protobuf (4.34.1-x86_64-linux-gnu)
+      bigdecimal
+      rake (~> 13.3)
+    google-protobuf (4.34.1-x86_64-linux-musl)
+      bigdecimal
+      rake (~> 13.3)
     gravatar_image_tag (1.2.0)
+    htmlbeautifier (1.4.3)
+    htmlentities (4.4.2)
     i18n (1.14.8)
       concurrent-ruby (~> 1.0)
     immutable-struct (2.5.0)
@@ -283,6 +317,10 @@ GEM
     pg (1.6.3-x86_64-linux-musl)
     pp (0.6.3)
       prettyprint
+    premailer (1.29.0)
+      addressable
+      css_parser (>= 1.19.0)
+      htmlentities (>= 4.0.0)
     prettyprint (0.2.0)
     prism (1.9.0)
     propshaft (1.3.1)
@@ -414,6 +452,22 @@ GEM
     ruby-progressbar (1.13.0)
     ruby2_keywords (0.0.5)
     rubyzip (2.4.1)
+    sass-embedded (1.98.0-aarch64-linux-gnu)
+      google-protobuf (~> 4.31)
+    sass-embedded (1.98.0-aarch64-linux-musl)
+      google-protobuf (~> 4.31)
+    sass-embedded (1.98.0-arm-linux-gnueabihf)
+      google-protobuf (~> 4.31)
+    sass-embedded (1.98.0-arm-linux-musleabihf)
+      google-protobuf (~> 4.31)
+    sass-embedded (1.98.0-arm64-darwin)
+      google-protobuf (~> 4.31)
+    sass-embedded (1.98.0-x86_64-darwin)
+      google-protobuf (~> 4.31)
+    sass-embedded (1.98.0-x86_64-linux-gnu)
+      google-protobuf (~> 4.31)
+    sass-embedded (1.98.0-x86_64-linux-musl)
+      google-protobuf (~> 4.31)
     securerandom (0.4.1)
     selenium-webdriver (4.10.0)
       rexml (~> 3.2, >= 3.2.5)
@@ -427,6 +481,11 @@ GEM
       logger (>= 1.7.0)
       rack (>= 3.2.0)
       redis-client (>= 0.26.0)
+    sidekiq-cron (2.3.1)
+      cronex (>= 0.13.0)
+      fugit (~> 1.8, >= 1.11.1)
+      globalid (>= 1.0.1)
+      sidekiq (>= 6.5.0)
     simplecov (0.22.0)
       docile (~> 1.1)
       simplecov-html (~> 0.11)
@@ -492,6 +551,7 @@ GEM
       railties (>= 7.1.0)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
+    unicode (0.4.4.5)
     unicode-display_width (3.2.0)
       unicode-emoji (~> 4.1)
     unicode-emoji (4.2.0)
@@ -530,6 +590,7 @@ PLATFORMS
 
 DEPENDENCIES
   bootsnap
+  bootstrap-email
   brakeman
   cancancan
   capybara
@@ -563,6 +624,7 @@ DEPENDENCIES
   selenium-webdriver
   shoulda-matchers
   sidekiq
+  sidekiq-cron
   simplecov
   sinatra
   slack-notifier

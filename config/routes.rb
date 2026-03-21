@@ -1,6 +1,11 @@
 # frozen_string_literal: true
 
+# mount sidekiq
+require "sidekiq/web"
+require "sidekiq/cron/web"
+
 Rails.application.routes.draw do
+  mount Sidekiq::Web, at: "/sidekiq"
   mount LetterOpenerWeb::Engine, at: "/letter_opener" if Rails.env.development?
 
   get "s/new/(:date)", to: "standups#new", as: "new_standup"
