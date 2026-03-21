@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 require "rails_helper"
+include ActiveJob::TestHelper
+ActiveJob::Base.queue_adapter = :test
 
 RSpec.describe "SignUpProcesses", type: :system do
   before do
@@ -27,9 +29,13 @@ RSpec.describe "SignUpProcesses", type: :system do
       fill_in "account_name", with: "Test Co"
     end
 
-    click_button "Save"
+    expect do
+      click_button "Save"
+      expect(ActionMailer::Base.deliveries.last.to).to eql["test@test.com"]
 
-    expect(current_path).to eql(root_path)
+      expect(current_path).to eql(root_path)
+    end
+
   end
 
   it "should fail on invalid user information" do
