@@ -54,5 +54,7 @@ Rails.application.configure do
   config.action_controller.raise_on_missing_callback_actions = true
 
   # Ensure Test environments have the mail info to render the mail templates
-  Rails.application.routes.default_url_options[:host] = "localhost:300"
+  config.action_mailer.default_url_options = { host: "localhost", port: 3000 }
 end
+
+Rails.application.routes.default_url_options[:host] = "localhost:300"
