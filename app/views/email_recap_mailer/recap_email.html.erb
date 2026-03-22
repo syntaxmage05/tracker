@@ -1,0 +1,74 @@
+<div class="container py-5">
+  <!-- Page Title -->
+  <h1 class="text-center mb-5 display-4 fw-bold text-primary">
+    Standup App
+  </h1>
+  <!-- Team Standups Card -->
+  <div class="card shadow-lg border-0 rounded-4 mb-4">
+    <div class="card-body p-5">
+      <!-- Team Name Header -->
+      <h3 class="text-center mb-4 fw-semibold">
+        <%= @team.name %> Standups Recap!
+      </h3>
+      <!-- No Standups Message -->
+      <% if @standups.empty? %>
+        <p class="mb-4 text-center text-muted">
+          No standups are available to display
+        </p>
+      <% else %>
+        <!-- Standups Grid -->
+        <% @standups.each_slice(3) do |standups_group| %>
+          <div class="row mb-4">
+            <% standups_group.each do |standup| %>
+              <div class="col-md-4 mb-3">
+                <div class="content-block h-100">
+                  <div class="card h-100 border-primary shadow-sm">
+                    <div class="card-header bg-primary text-white">
+                      <h5 class="mb-0">
+                        <%= link_to standup.user.name, standups_account_user_url(standup.user), class: "text-white" %>
+                      </h5>
+                    </div>
+                    <div class="card-body">
+                      <!-- Dids -->
+                      <h6 class="fw-semibold">Dids</h6>
+                      <ul class="list-group mb-3">
+                        <% standup.dids.each do |did| %>
+                          <li class="list-group-item"><%= did.title %></li>
+                        <% end %>
+                      </ul>
+                      <!-- Todos -->
+                      <h6 class="fw-semibold">Todos</h6>
+                      <ul class="list-group mb-3">
+                        <% standup.todos.each do |todo| %>
+                          <li class="list-group-item"><%= todo.title %></li>
+                        <% end %>
+                      </ul>
+                      <!-- Blockers -->
+                      <h6 class="fw-semibold">Blockers</h6>
+                      <ul class="list-group">
+                        <% standup.blockers.each do |blocker| %>
+                          <li class="list-group-item"><%= blocker.title %></li>
+                        <% end %>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+            <!-- Fill empty columns if less than 3 -->
+            <% if standups_group.size < 3 %>
+              <% (3 - standups_group.size).times do %>
+                <div class="col-md-4"></div>
+              <% end %>
+            <% end %>
+          </div>
+        <% end %>
+      <% end %>
+      <!-- Call-to-Action Button -->
+      <div class="d-flex justify-content-center mt-4">
+        <%= link_to "View Your Standups", activity_mine_url(),
+          class: "btn btn-primary btn-lg px-5 rounded-pill", style: "width: 95%" %>
+      </div>
+    </div>
+  </div>
+</div>

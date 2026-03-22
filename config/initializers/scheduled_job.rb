@@ -2,6 +2,7 @@
 
 # config/initializers/sidekiq-cron.rb
 require "sidekiq-cron"
+Sidekiq.strict_args!(false)
 
 # Configure Sidekiq-Cron
 Sidekiq::Cron.configure do |config|
@@ -11,12 +12,15 @@ end
 
 # Define your jobs
 jobs_hash = {
-  "team_reminder" => {
+  "reminder" => {
     "class" => "Reminders::FindTeamsJob",
-    "cron" => "0,15,30,45 * * * *", # Runs at :00, :15, :30, :45
-    "active_job" => true, # Since it's an ActiveJob
-    "queue" => "default",
-    "description" => "Find teams that need standup reminders and schedule individual emails"
+    "cron" => "0,15,30,45 * * * *",
+    "active_job" => true
+  },
+  "recap" => {
+    "class" => "Recaps::FindTeamsJob",
+    "cron" => "0,15,30,45 * * * *",
+    "active_job" => true
   }
 }
 

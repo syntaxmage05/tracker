@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class WelcomeEmailMailer < ApplicationMailer
+  self.delivery_job = ActionMailer::MailDeliveryJob
+  self.delivery_job.queue_name = :mailers
   default from: "welcome@standup-app.com"
 
   def welcome_email(user)

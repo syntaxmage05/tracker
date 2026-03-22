@@ -10,7 +10,9 @@ RSpec.describe WelcomeEmailMailer, type: :mailer do
     ActiveJob::Base.queue_adapter = :test
     expect do
       WelcomeEmailMailer.welcome_email(user).deliver_later
-    end.to have_enqueued_job.on_queue("default")
+    end.to have_enqueued_job(ActionMailer::MailDeliveryJob).with do |job|
+      job.mailer == "WelcomeEmailMailer" && job.method_name == :welcome_email
+    end
   end
 
   it "welcome_email is sent" do
