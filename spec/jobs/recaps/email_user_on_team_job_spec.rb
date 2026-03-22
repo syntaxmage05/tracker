@@ -15,7 +15,7 @@ RSpec.describe Recaps::EmailUserOnTeamJob do
     team
   end
   let!(:standups) do
-    [FactoryBot.create(:standup, standup_date: Date.today.iso8601, user_id: user.id)]
+    [FactoryBot.create(:standup, standup_date: Time.zone.today.iso8601, user_id: user.id)]
   end
 
   before { ActiveJob::Base.queue_adapter = :test }
@@ -26,7 +26,7 @@ RSpec.describe Recaps::EmailUserOnTeamJob do
   end
 
   it "enqueues a mailer based job" do
-    job = Recaps::EmailUserOnTeamJob.new(team, Date.today.iso8601)
+    job = Recaps::EmailUserOnTeamJob.new(team, Time.zone.today.iso8601)
     expect { job.perform_now }.to have_enqueued_job(ActionMailer::MailDeliveryJob)
   end
 
