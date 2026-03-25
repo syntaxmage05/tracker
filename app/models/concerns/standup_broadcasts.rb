@@ -4,7 +4,7 @@ module StandupBroadcasts
   extend ActiveSupport::Concern
 
   included do
-    # Scope for fetching a user's standups
+    # Scopes
     scope :users_standups, lambda { |user|
       user
         .standups
@@ -13,21 +13,25 @@ module StandupBroadcasts
         .order("standup_date DESC")
     }
 
-    # Scope for fetching standups for a team on a specific date
     scope :teams_standups_by_date, lambda { |team, date|
       team
         .users
-        .flat_map do |u|
-          u.standups
-            .where(standup_date: date)
-            .includes(:dids, :todos, :blockers)
-            .references(:tasks)
-        end
+        .flat_map { |u| u.standups.where(standup_date: date)
+          .includes(:dids, :todos, :blockers)
+          .references(:tasks) }
     }
 
-    # Broadcast after creation
+    scope :notification_standups, lambda { |user|
+      includes(user: { teams: { users: { standups: %i[dids todos blockers] } } })
+        .references(:tasks)
+        .where(teams: { users: user.id })
+        .order(created_at: :desc)
+        .limit(10)
+    }
+
+    # Callbacks
     after_create_commit do
-      # Broadcast to the user
+      # Update the current user's standups
       broadcast_update_to(
         [user, :standups],
         target: dom_id(user, :standups),
@@ -38,7 +42,17 @@ module StandupBroadcasts
         )
       )
 
-      # Broadcast to each team the user belongs to
+      # Update notifications for the user
+      broadcast_update_to(
+        [user, "notification_standups"],
+        target: "notification_standups",
+        html: render(
+          partial: "layouts/components/notifications",
+          locals: { notification_standups: Standup.notification_standups(user) }
+        )
+      )
+
+      # Update teams' standups
       user.teams.each do |team|
         broadcast_update_to(
           [team, standup_date, :standups],
@@ -52,33 +66,35 @@ module StandupBroadcasts
       end
     end
 
-    # Broadcast after update
     after_update_commit do
-      # Update for the user
-      broadcast_replace_to(
-        [user, :standups],
+      # Replace the updated standup for the current user
+      broadcast_replace_to [user, :standups],
         target: self,
         locals: { caller: "activity_mine", user: user }
-      )
 
-      # Update for each team
+      # Replace the updated standup for each team
       user.teams.each do |team|
-        broadcast_replace_to(
-          [team, standup_date, :standups],
+        broadcast_replace_to [team, standup_date, :standups],
           target: self,
           locals: { caller: "teams/standups_index", user: user }
-        )
       end
     end
 
-    # Broadcast after destroy
     after_destroy_commit do
-      # Remove from user's stream
-      broadcast_remove_to([user, :standups])
+      # Remove the standup for the current user
+      broadcast_remove_to [user, :standups]
 
-      # Remove from each team's stream
+      # Update notifications after deletion
+      broadcast_update_to [user, "notification_standups"],
+        target: "notification_standups",
+        html: render(
+          partial: "layouts/components/notifications",
+          locals: { notification_standups: Standup.notification_standups(user) }
+        )
+
+      # Remove the standup from each team
       user.teams.each do |team|
-        broadcast_remove_to([team, standup_date, :standups])
+        broadcast_remove_to [team, standup_date, :standups]
       end
     end
   end

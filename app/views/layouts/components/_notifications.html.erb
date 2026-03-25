@@ -1,0 +1,22 @@
+<!-- app/views/layouts/components/_notifications.html.erb -->
+<div class="w-64 max-h-96 overflow-y-auto rounded-lg shadow-lg bg-gray-800 text-white ring-1 ring-black ring-opacity-5">
+  <!-- Notification count -->
+  <div class="px-4 py-2 border-b border-gray-700 text-xs text-gray-400">
+    <%= notification_standups.count %> Notifications
+  </div>
+  <!-- Notifications list -->
+  <% if notification_standups.any? %>
+    <% notification_standups.each do |standup| %>
+      <a href="#"
+         class="block px-4 py-2 text-sm text-white hover:bg-gray-700 transition-colors rounded-md">
+        <span class="font-medium"><%= standup.user.name %></span>
+        has a new Standup from
+        <span class="font-semibold"><%= standup.standup_date %></span>
+      </a>
+    <% end %>
+  <% else %>
+    <div class="px-4 py-2 text-sm text-gray-400">
+      No notifications
+    </div>
+  <% end %>
+</div>

@@ -9,6 +9,7 @@ class ApplicationController < ActionController::Base
   helper_method :current_account
 
   helper_method :current_date
+  helper_method :notification_standups
 
   rescue_from CanCan::AccessDenied do |exception|
     redirect_to root_url, error: exception.message
@@ -25,6 +26,10 @@ class ApplicationController < ActionController::Base
     # session[:current_date] = session[:current_date] || Time.zone.today.iso8601
     # @_current_date ||= session[:current_date]
     @_current_date ||= session[:current_date] ||= Time.zone.today.iso8601
+  end
+
+  def notification_standups
+    Standup.notification_standups(current_user)
   end
 
   def visible_teams
