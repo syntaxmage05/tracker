@@ -26,5 +26,9 @@ module StandupBroadcasts
     after_update_commit do
       broadcast_replace_to [user, :standups], target: self, locals: { caller: "activity_mine", user: user }
     end
+
+    after_destroy_commit do
+      broadcast_remove_to [user, :standups]
+    end
   end
 end
