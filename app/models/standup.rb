@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Standup < ApplicationRecord
+  include StandupBroadcasts
+
   belongs_to :user
 
   has_many :task_memberships, dependent: :delete_all

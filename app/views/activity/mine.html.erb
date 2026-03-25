@@ -9,7 +9,8 @@
 </div>
 <div class="flex justify-center">
   <div class="p-4">
-    <div class="grid grid-cols-3 auto-cols-auto gap-4">
+    <%= turbo_stream_from [current_user, "standups"] %>
+    <div class="grid grid-cols-3 auto-cols-auto gap-4" id="<%= dom_id(current_user, "standups")%>">
       <%= render @standups %>
     </div>
   </div>
