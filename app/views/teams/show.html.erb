@@ -75,7 +75,8 @@
     <% if @standups.empty? %>
       <p class="text-gray-500">No standups are available to display</p>
     <% else %>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <%= turbo_stream_from @team, Date.today.iso8601, "standups" %>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="<%= "#{@team.id}_#{Date.today.iso8601}_standups" %>">
         <%= render partial: "standups/standup", collection: @standups %>
       </div>
     <% end %>
