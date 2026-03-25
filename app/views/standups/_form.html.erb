@@ -1,16 +1,12 @@
-<%= form_with model: @standup, id: 'team-form', html: {class: 'space-y-6'} do |f| %>
-  <%= f.hidden_field :standup_date, value: current_date %>
+<%= form_with model: @standup, id: 'standup-form', html: {class: 'space-y-6'} do |f| %>
+  <%= f.hidden_field :standup_date, value: f.object&.standup_date || params[:date] %>
   <%= render partial: 'layouts/components/date_change', locals: {reload_path: "/s/#{action_name}"} %>
   <% if @standup.errors.any? %>
     <div class="text-red-700">
       <h4>
         <%= "#{pluralize(@standup.errors.count, "error")} prohibited this standup from being saved:" %>
       </h4>
-      <ul>
-        <% @standup.errors.full_messages.each do |msg| %>
-          <li><%= msg %></li>
-        <% end %>
-      </ul>
+      <%== @standup.errors.full_messages.map{|msg|content_tag(:li, msg)}.join %>
     </div>
   <% end %>
   <h3>What did you do since your last standup?</h3>

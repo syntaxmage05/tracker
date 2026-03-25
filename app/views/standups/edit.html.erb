@@ -1,11 +1,12 @@
 <div class="flex p-5" aria-label="Breadcrumb">
   <ol class="inline-flex items-center space-x-1 md:space-x-3">
-    <!-- Breadcrumb items would go here -->
   </ol>
 </div>
 <div class="flex justify-center">
-  <div class="w-3/5 p-4 bg-white border border-gray-200 rounded-lg shadow-md sm:p-6 lg:p-8">
+  <div class="p-4 w-3/5 bg-white rounded-lg border border-gray-200 shadow-md sm:p-6 lg:p-8">
     <h5 class="text-xl font-bold leading-none text-gray-900">Edit the standup:</h5>
-    <%= render 'form' %>
+    <%= turbo_frame_tag dom_id(@standup) do %>
+      <%= render 'form' %>
+    <% end %>
   </div>
 </div>

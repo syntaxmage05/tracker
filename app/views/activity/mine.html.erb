@@ -1,7 +1,7 @@
 <div class="flex p-5" aria-label="Breadcrumb">
   <ol class="inline-flex items-center space-x-1 md:space-x-3">
     <li class="inline-flex items-center">
-      <h2 class="inline-flex items-center font-medium text-gray-700 hover:text-gray-900">
+      <h2 href="#" class="inline-flex items-center font-medium text-gray-700 hover:text-gray-900">
         My Activity
       </h2>
     </li>
@@ -9,9 +9,22 @@
 </div>
 <div class="flex justify-center">
   <div class="p-4">
-    <%= turbo_stream_from [current_user, "standups"] %>
-    <div class="grid grid-cols-3 auto-cols-auto gap-4" id="<%= dom_id(current_user, "standups")%>">
-      <%= render @standups %>
+    <%= turbo_stream_from current_user, "standups" %>
+    <div class="grid grid-cols-3 auto-cols-auto gap-4" id="<%= dom_id(current_user, 'standups') %>">
+      <% unless current_user.standups.where(standup_date: Date.today).size > 0 %>
+        <% if @standups.empty? %>
+          <div class="py-8">
+            <p>No standups are available to display</p>
+          </div>
+        <% end %>
+        <%= turbo_frame_tag Standup.new, class:"w-96 block p-6 bg-white rounded-lg border border-gray-200 shadow-md" do %>
+          <%= link_to "Add a Standup",
+            new_standup_path(date: Date.today.iso8601),
+            class: "font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 border border-gray-400 text-gray-400 hover:text-white hover:bg-gray-600 focus:ring-gray-800",
+            data: { turbo_frame: dom_id(Standup.new) } %>
+        <% end %>
+      <% end %>
+      <%= render partial: 'standups/standup', collection: @standups, locals: {user: current_user} %>
     </div>
   </div>
 </div>

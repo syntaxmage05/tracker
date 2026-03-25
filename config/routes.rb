@@ -8,9 +8,7 @@ Rails.application.routes.draw do
   mount Sidekiq::Web, at: "/sidekiq"
   mount LetterOpenerWeb::Engine, at: "/letter_opener" if Rails.env.development?
 
-  get "s/new/(:date)", to: "standups#new", as: "new_standup"
-  get "s/edit/(:date)", to: "standups#edit", as: "edit_standup"
-  resources :standups, path: "s", except: [:new, :edit]
+  resources :standups, path: "s"
 
   devise_for :users, controllers: { registrations: "registrations" }
   resource :accounts

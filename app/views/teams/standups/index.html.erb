@@ -21,13 +21,22 @@
 </div>
 <div class="flex justify-center">
   <div class="w-4/5 p-4 sm:p-6 lg:p-8">
-    <div class="grid grid-cols-3 auto-cols-auto gap-4">
-      <% if @standups.empty? %>
-        <div class="col-span-3 text-center">
-          <p class="text-gray-500">No standups found for this date</p>
-        </div>
+    <%= turbo_stream_from @team, current_date, "standups" %>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="<%= "#{@team.id}_#{current_date}_standups" %>">
+      <% unless current_user.standups.where(standup_date: current_date).size > 0 %>
+        <% if @standups.empty? %>
+          <div class="col-span-full text-center py-8">
+            <p class="text-gray-500">No standups found for this date</p>
+          </div>
+        <% end %>
+        <%= turbo_frame_tag Standup.new, class:"w-full block p-6 bg-white rounded-lg border border-gray-200 shadow-md" do %>
+          <%= link_to "Submit a Standup",
+            new_standup_path(date: current_date),
+            class: "font-medium rounded-lg text-sm px-5 py-2.5 text-center border border-gray-400 text-gray-400 hover:text-white hover:bg-gray-600 focus:ring-gray-800 w-full block",
+            data: { turbo_frame: dom_id(Standup.new) } %>
+        <% end %>
       <% end %>
-      <%= render partial: 'standups/standup', collection: @standups %>
+      <%= render partial: 'standups/standup', collection: @standups, locals: {user: current_user} %>
     </div>
   </div>
 </div>

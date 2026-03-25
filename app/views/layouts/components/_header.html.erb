@@ -14,35 +14,28 @@
           <!-- Main Links -->
           <li class="flex-1 md:flex-none md:mr-3">
             <a href="/t" class="inline-block py-2 px-4 text-white no-underline hover:text-gray-300">Teams</a>
-            <a href="/s" class="inline-block py-2 px-4 text-white no-underline hover:text-gray-300">Standups</a>
           </li>
           <!-- Notification Dropdown -->
           <li class="flex-1 md:flex-none md:mr-3">
             <div data-controller="dropdown" class="relative inline-block">
-              <button id="notification_dropdown" 
-                      data-action="dropdown#toggle click@window->dropdown#hide"
-                class="drop-button text-white py-2 px-2">
-                <%= heroicon 'bell' %>
-              </button>
-              <%= turbo_stream_from current_user, "notification_standups" %>
               <div data-controller="dropdown" class="relative inline-block">
                 <button id="notification_dropdown"
-          data-action="dropdown#toggle click@window->dropdown#hide"
+                        data-action="dropdown#toggle click@window->dropdown#hide"
                   class="relative drop-button text-white py-2 px-2 focus:outline-none">
                   <%= heroicon 'bell' %>
                   <!-- Red badge for unread notifications -->
                   <span id="notification_count"
-          class="absolute -top-1 -right-1 inline-flex items-center justify-center
-                 px-2 py-0.5 text-xs font-bold leading-none text-white bg-red-600
-                 rounded-full">
+                        class="absolute -top-1 -right-1 inline-flex items-center justify-center
+                               px-2 py-0.5 text-xs font-bold leading-none text-white bg-red-600
+                               rounded-full">
                     <%= notification_standups.count %>
                   </span>
                 </button>
                 <%= turbo_stream_from current_user, "notification_standups" %>
                 <div data-dropdown-target="menu"
-       class="hidden absolute right-0 mt-3 z-30">
+                     class="hidden absolute right-0 mt-3 z-30">
                   <%= render partial: 'layouts/components/notifications',
-               locals: { notification_standups: notification_standups } %>
+                             locals: { notification_standups: notification_standups } %>
                 </div>
               </div>
             </div>

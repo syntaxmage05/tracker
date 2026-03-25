@@ -1,56 +1,33 @@
-<div id="<%= dom_id standup %>" class="w-full p-6 bg-white border border-gray-200 rounded-lg shadow-md">
-  <!-- Header -->
-  <div class="flex justify-between items-start">
-    <h3 class="text-xl font-bold text-gray-900 leading-tight">
-      <%= standup_header standup, local_assigns[:caller] %>
-    </h3>
-    <%= link_to edit_standup_path(standup), class: "text-gray-500 hover:text-gray-700" do %>
-      <%= heroicon "pencil", class: "w-5 h-5" %>
-    <% end %>
-  </div>
-  <!-- Dids -->
-  <div class="mt-4">
-    <h4 class="text-lg font-semibold text-gray-900">Dids</h4>
-    <% if standup.dids.any? %>
-      <ul class="mt-2 space-y-2">
-        <% standup.dids.each do |did| %>
-          <li class="p-2 bg-gray-100 border border-gray-200 rounded shadow-sm">
-            <%= did.title %>
-          </li>
+<%= turbo_frame_tag dom_id(standup), class: "w-96 block p-6 bg-white rounded-lg border border-gray-200 shadow-md" do %>
+  <div>
+    <div class="float-right">
+      <% if standup.user_id == local_assigns[:user]&.id %>
+        <%= link_to edit_standup_path(standup) do %>
+          <%= heroicon "pencil", class: 'inline' %>
         <% end %>
-      </ul>
-    <% else %>
-      <p class="text-sm text-gray-500 mt-2">No updates</p>
-    <% end %>
-  </div>
-  <!-- Todos -->
-  <div class="mt-4">
-    <h4 class="text-lg font-semibold text-gray-900">Todos</h4>
-    <% if standup.todos.any? %>
-      <ul class="mt-2 space-y-2">
-        <% standup.todos.each do |todo| %>
-          <li class="p-2 bg-gray-100 border border-gray-200 rounded shadow-sm">
-            <%= todo.title %>
-          </li>
+        <%= button_to standup_path(standup), {form_class: 'inline', method: :delete, form: {data: { turbo_confirm: "Are you sure? Deleting this standup is permanent"}}} do %>
+          <%= heroicon "trash", class: 'inline' %>
         <% end %>
-      </ul>
-    <% else %>
-      <p class="text-sm text-gray-500 mt-2">No todos</p>
-    <% end %>
+      <% end %>
+    </div>
+    <h3 class="font-bold leading-tight text-gray-900 text-xl"><%== standup_header standup, local_assigns[:caller] %></h3>
   </div>
-  <!-- Blockers -->
-  <div class="mt-4">
-    <h4 class="text-lg font-semibold text-gray-900">Blockers</h4>
-    <% if standup.blockers.any? %>
-      <ul class="mt-2 space-y-2">
-        <% standup.blockers.each do |blocker| %>
-          <li class="p-2 bg-gray-100 border border-gray-200 rounded shadow-sm">
-            <%= blocker.title %>
-          </li>
-        <% end %>
-      </ul>
-    <% else %>
-      <p class="text-sm text-gray-500 mt-2">No blockers</p>
+  <h4 class="mt-4 font-bold leading-tight text-gray-900 text-lg">Dids</h4>
+  <ul>
+    <% standup.dids.each do |did| %>
+      <li class="bg-gray-300 border border-gray-100 p-2 rounded shadow-sm"> <%= did.title %> </li>
     <% end %>
-  </div>
-</div>
+  </ul>
+  <h4 class="mt-4 font-bold leading-tight text-gray-900 text-lg">Todos</h4>
+  <ul>
+    <% standup.todos.each do |todo| %>
+      <li class="bg-gray-300 border border-gray-100 p-2 rounded shadow-sm"> <%= todo.title %> </li>
+    <% end %>
+  </ul>
+  <h4 class="mt-4 font-bold leading-tight text-gray-900 text-lg">Blockers</h4>
+  <ul>
+    <% standup.blockers.each do |blocker| %>
+      <li class="bg-gray-300 border border-gray-100 p-2 rounded shadow-sm"> <%= blocker.title %> </li>
+    <% end %>
+  </ul>
+<% end %>
