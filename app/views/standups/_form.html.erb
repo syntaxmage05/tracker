@@ -6,7 +6,11 @@
       <h4>
         <%= "#{pluralize(@standup.errors.count, "error")} prohibited this standup from being saved:" %>
       </h4>
-      <%== @standup.errors.full_messages.map{|msg|content_tag(:li, msg)}.join %>
+      <ul>
+        <% @standup.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
     </div>
   <% end %>
   <h3>What did you do since your last standup?</h3>
