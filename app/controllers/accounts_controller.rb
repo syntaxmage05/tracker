@@ -14,7 +14,7 @@ class AccountsController < ApplicationController
     @account = Account.new(account_params)
 
     result = NewRegistrationService
-      .new(account: @account, user: current_user)
+      .new(account: @account, user: current_user, product: params[:product])
       .process_registration
 
     if result.success

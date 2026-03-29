@@ -48,3 +48,6 @@ module Tracker
     config.active_job.queue_adapter = :sidekiq
   end
 end
+
+Money.locale_backend = nil
+Money.rounding_mode = BigDecimal::ROUND_HALF_EVEN

@@ -1,0 +1,55 @@
+<!-- Breadcrumb -->
+<div class="flex p-5" aria-label="Breadcrumb">
+  <ol class="inline-flex items-center space-x-1 md:space-x-3">
+    <li class="inline-flex items-center">
+      <h2 class="inline-flex items-center font-medium text-gray-700 hover:text-gray-900">
+        Select A Plan
+      </h2>
+    </li>
+  </ol>
+</div>
+<!-- Pricing Section -->
+<section class="bg-white">
+  <div class="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6">
+    <div class="space-y-8 lg:gap-6 xl:gap-10 lg:space-y-5">
+      <% @products.each do |product| %>
+        <div class="flex flex-col p-6 mx-auto max-w-lg text-center text-gray-900 bg-white rounded-lg border border-gray-100 shadow">
+          <!-- Title -->
+          <h3 class="mb-4 text-2xl font-semibold">
+            <%= product.human_name %>
+          </h3>
+          <!-- Description -->
+          <p class="font-light text-gray-500 sm:text-lg">
+            Best option for personal use & for your next project.
+          </p>
+          <!-- Price -->
+          <div class="flex justify-center items-baseline my-8">
+            <span class="mr-2 text-5xl font-extrabold">
+              <%= Money.new(product.amount, 'USD').format %>
+            </span>
+            <span class="text-gray-500">/month</span>
+          </div>
+          <!-- Features -->
+          <ul role="list" class="mb-8 space-y-4 text-left">
+            <li class="flex items-center space-x-3">
+              <strong><%= product.users %> users</strong>
+            </li>
+            <li class="flex items-center space-x-3">
+              <strong><%= product.teams %> teams</strong>
+            </li>
+            <li class="flex items-center space-x-3">
+              <%= product.integrations ? "Allows" : "Doesn't Allow" %> Integrations
+            </li>
+          </ul>
+          <!-- CTA -->
+          <a
+            href="<%= new_user_registration_path(product: product.product_id) %>"
+            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+          >
+            Get started
+          </a>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</section>

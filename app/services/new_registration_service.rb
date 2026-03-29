@@ -3,14 +3,16 @@
 class NewRegistrationService
   Result = ImmutableStruct.new(:success, :user, :account, :error)
 
-  attr_reader :user, :account
+  attr_reader :user, :account, :product
   def initialize(params)
     @user = params[:user]
     @account = params[:account]
+    @product = params[:product]
   end
 
   def process_registration
     account_create
+    create_stripe_objects
     send_welcome_email
     notify_slack
 
@@ -34,6 +36,10 @@ class NewRegistrationService
       user.account_id = account.id
       user.save!
       user.add_role :admin, account
+    end
+
+    def create_stripe_objects
+      Subscription::Create.new(product, user, account).process
     end
 
     def send_welcome_email

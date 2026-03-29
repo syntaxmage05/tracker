@@ -26,6 +26,8 @@ Rails.application.routes.draw do
   resources :teams, path: "t"
 
   scope "account", as: "account" do
+    resources :products, only: [:index], controller: "accounts/products"
+
     resources :users do
       member do
         get "s", to: "users/standups#index", as: "standups"

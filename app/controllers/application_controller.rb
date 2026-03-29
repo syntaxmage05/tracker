@@ -9,7 +9,8 @@ class ApplicationController < ActionController::Base
   helper_method :current_account
   helper_method :current_date
   helper_method :notification_standups
-  helper_method :can_manage_team? # Add this helper
+  helper_method :can_manage_team?
+  helper_method :current_product
 
   rescue_from CanCan::AccessDenied do |exception|
     redirect_to root_url, error: exception.message
@@ -20,6 +21,11 @@ class ApplicationController < ActionController::Base
     return nil unless user_signed_in?
 
     @_current_account ||= current_user.account
+  end
+
+  def current_account
+    @current_product ||= current_user&.account&.product
+    @current_product
   end
 
   def current_date
