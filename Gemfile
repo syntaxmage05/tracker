@@ -94,3 +94,5 @@ gem "bootstrap-email"
 gem "lefthook", "~> 2.1"
 gem "rails_heroicon"
 gem "stripe"
+
+gem "stripe_event", "~> 2.14"
