@@ -25,6 +25,8 @@ Rails.application.routes.draw do
   get "t/:id/(:date)", to: "teams#show"
   resources :teams, path: "t"
 
+  get "billing", to: "billing#index"
+
   scope "account", as: "account" do
     resources :products, only: [:index], controller: "accounts/products"
 

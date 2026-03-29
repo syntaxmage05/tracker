@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class NewRegistrationService
-  Result = ImmutableStruct.new(:success, :user, :account, :error)
+  Result = ImmutableStruct.new(:success?, :user, :account, :error)
 
   attr_reader :user, :account, :product
   def initialize(params)
@@ -16,10 +16,15 @@ class NewRegistrationService
     send_welcome_email
     notify_slack
 
-    Result.new(success: true, user: user, account: account, error: nil)
-  rescue ActiveRecord::RecordInvalid, Slack::Notifier => exception
     Result.new(
-      success: false,
+      success?: true,
+      user: user,
+      account: account,
+      error: nil
+    )
+  rescue ActiveRecord::RecordInvalid, Slack::Notifier, ::Stripe::StripeError => exception
+    Result.new(
+      success?: false,
       user: user,
       account: account,
       error: exception.message
@@ -29,7 +34,8 @@ class NewRegistrationService
   private
 
     def account_create
-      post_account_setup if account.save!
+      account.save!
+      post_account_setup
     end
 
     def post_account_setup

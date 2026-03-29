@@ -70,7 +70,7 @@
                   <i class="fa fa-cog fa-fw"></i> Settings
                 </a>
                 <div class="py-2 border-t border-gray-300"></div>
-                <%= link_to "Log out", destroy_user_session_path, method: :delete, class: "block p-2 hover:bg-gray-700 text-white text-md no-underline" %>
+                <%= link_to "Log out", destroy_user_session_path, data: { turbo_method: :delete}, class: "block p-2 hover:bg-gray-700 text-white text-md no-underline" %>
               </div>
             </div>
           </li>
