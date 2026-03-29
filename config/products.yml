@@ -1,0 +1,33 @@
+free:
+  users: 2
+  teams: 1
+  integration: false
+  amount: 0
+  price_id: price_1TGF45FWnpir3T0cpuacsjn6
+  interval: "month"
+  product_id: "prod_UEiVUXI6mqgqQI"
+  human_name: "Free"
+  active: true
+  displayable: true
+starter:
+  users: 10
+  teams: 3
+  integration: true
+  amount: 1900
+  price_id: price_1TGF5yFWnpir3T0c19Qhn2wr
+  interval: "month"
+  product_id: "prod_UEiX2CXWucM1so"
+  human_name: "Starter"
+  active: true
+  displayable: true
+unlimited:
+  users: 9999
+  teams: 9999
+  integration: true
+  amount: 3900
+  price_id: price_1TGF7EFWnpir3T0cToaPuvPn
+  interval: "month"
+  product_id: "prod_UEiYM2VaEMN5aM"
+  human_name: "Unlimited"
+  active: true
+  displayable: true
